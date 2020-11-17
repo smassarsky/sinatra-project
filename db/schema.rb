@@ -47,7 +47,9 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
     t.string "name"
     t.integer "team_id"
     t.integer "user_id"
-    t.boolean "active"
+    t.string "position"
+    t.integer "jersey_num"
+    t.string "status"
   end
 
   create_table "seasons", force: :cascade do |t|
@@ -58,6 +60,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
   create_table "teams", force: :cascade do |t|
     t.string "name"
     t.integer "owner_id"
+    t.integer "current_season_id"
   end
 
   create_table "users", force: :cascade do |t|

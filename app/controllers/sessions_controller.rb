@@ -40,4 +40,8 @@ class SessionsController < ApplicationController
     erb :'/sessions/dashboard'
   end
 
+  get '/error/:slug' do
+    erb :'/sessions/error'
+  end
+
 end

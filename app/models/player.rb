@@ -10,5 +10,5 @@ class Player < ActiveRecord::Base
 
   validates :name, presence: true
   validates :team_id, presence: true
-  validates :active, presence: true
+  validates :status, presence: true
 end

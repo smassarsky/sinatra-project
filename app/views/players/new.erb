@@ -1,0 +1,21 @@
+<h2>Add Player To: <%= @team.name %></h2>
+<form action=<%= "/teams/#{@team.id}/players" %> method="post">
+  
+  <label for="name">Name:</label>
+  <input id="name" type="text" name="name">
+  <br>
+  <label for="jersey">Jersey Number:</label>
+  <input id="jersey" type="number" name="jersey">
+  <br>
+  <label for="position">Position:</label>
+  <select id="position" name="position">
+    <% @positions.each do |position| %>
+      <option value="<%= position %>"><%= position %></option>
+    <% end %>
+  </select>
+  <br>
+  <label for="active">Active:</label>
+  <input id="active" type="checkbox" name="active" value="true">
+  <br>
+  <button class="btn btn-primary" type="submit">Add Player</button>
+</form>

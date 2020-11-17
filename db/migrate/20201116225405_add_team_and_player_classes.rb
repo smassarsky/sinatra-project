@@ -4,13 +4,16 @@ class AddTeamAndPlayerClasses < ActiveRecord::Migration[6.0]
     create_table :teams do |t|
       t.string :name
       t.integer :owner_id
+      t.integer :current_season_id
     end
 
     create_table :players do |t|
       t.string :name
       t.integer :team_id
       t.integer :user_id
-      t.boolean :active
+      t.string :position
+      t.integer :jersey_num
+      t.string :status
     end
 
     create_table :seasons do |t|

@@ -1,0 +1,77 @@
+<div class="d-flex justify-content-center pt-3" id="team">
+  <h2><%= @team.name %></h2>
+
+  <% if current_user == @team.owner %>
+    <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/edit" %>>Edit Name</a>
+    <a class="my-auto" href=<%= "/teams/#{@team.id}/delete" %>>Delete Team</a>
+  <% end %>
+</div>
+
+<div class="pt-3" id="current_season">
+  <% if @team.current_season %>
+    <div class="d-flex justify-content-center">
+      <h4>Current Season</h4>
+      <% if current_user == @team.owner %>
+        <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/seasons/new" %>>New Season</a>
+      <% end %>
+    </div>
+    <table class="w-100">
+      <tr>
+        <th>Season</th>
+        <th>Next Game</th>
+        <th>Current Record</th>
+      </tr>
+      <tr>
+        <td><a href=<%= "/seasons/#{@team.current_season.id}" %>><%= @team.current_season.name %></a></td>
+        <td><%= @team.next_game %></td>
+        <td><%= @team.record %></td>
+      </tr>
+    </table>
+  <% else %>
+    <h4>No Seasons Yet - <a href=<%= "/teams/#{@team.id}/seasons/new" %>>Create a Season</a></h4>
+  <% end %>
+</div>
+
+<div class="pt-3" id="players">
+  <div class="d-flex justify-content-center">
+    <h4>Players</h4>
+    <% if current_user == @team.owner %>
+      <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/players/new" %>>New Player</a>
+    <% end %>
+  </div>
+
+  <% if !@team.players.empty? %>
+    <h5 class="pt-3 text-center">Active Players</h5>
+    <% if !@team.active_players.empty? %>
+
+      <table class="w-75">
+        <tr>
+          <th>Name</th>
+          <th>Jersey Number</th>
+          <th>Position</th>
+        </tr>
+        <% @team.active_players.each do |player| %>
+          <tr>
+            <td><%= player.name %></td>
+            <td><%= player.jersey_num %></td>
+            <td><%= player.position %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <p>No Active Players</p>
+    <% end %>
+
+    
+    <% if !@team.inactive_players.empty? %>
+      <h5>Inactive Players</h5>
+      <ul>
+        <% @team.inactive_players.each do |player| %>
+          <li><%= player.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% else %>
+    <h4>No Players Yet</h4>
+  <% end %>
+</div>

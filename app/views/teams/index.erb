@@ -1,0 +1,42 @@
+<h1>Your Teams - <a href="/teams/new">(Create a Team)</a></h1>
+
+<% if @user.teams_owned || @user.teams_played_for%>
+  <% if @user.teams_owned %>
+    <h2>Teams You Manage</h2>
+    <table>
+      <tr>
+        <th>Team</th>
+        <th>Next Game</th>
+        <th>Current Record</th>
+      </tr>
+      <% @user.teams_owned.each do |team|%>
+        <tr>
+          <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+          <td><%= team.next_game %></td>
+          <td><%= team.record %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  <% if @user.teams_played_for %>
+    <h2>Teams You Play For</h2>
+    <table>
+      <tr>
+        <th>Team</th>
+        <th>Next Game</th>
+        <th>Current Record</th>
+      </tr>
+      <% @user.teams_owned.each do |team|%>
+        <tr>
+          <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+          <td><%= team.next_game %></td>
+          <td><%= team.record %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% else %>
+
+  <h2>No Teams Found</h2>
+
+<% end %>
