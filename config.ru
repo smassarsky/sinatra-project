@@ -10,3 +10,5 @@ run ApplicationController
 use SessionsController
 use TeamsController
 use PlayersController
+use SeasonsController
+use GamesController

@@ -32,6 +32,18 @@ class ApplicationController < Sinatra::Base
       redirect '/dashboard' if is_logged_in?
     end
 
+    def positions
+      ["C", "LW", "RW", "D", "G"]
+    end
+
+    def owner_or_teammate?(team)
+      current_user == team.owner || team.users.include?(current_user)
+    end
+
+    def owner?(team)
+      current_user == team.owner
+    end
+
   end
 
 end

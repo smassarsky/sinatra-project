@@ -1,0 +1,55 @@
+<div class="mt-3 text-center">
+  <h2><%= @player.team.name %></h2>
+  <% if @player.user %>
+    <a href=<%= "/users/#{@player.user.id}" %>><h3><%= @player.name %></h3></a>
+  <% else %>
+  <h3><%= @player.name %></h3>
+  <% end %>
+</div>
+
+<div id="current-season-stats" class="mt-3 text-center">
+  <h3>Current Season Stats</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Games Played</th>
+        <th>Points</th>
+        <th>Goals</th>
+        <th>Assists</th>
+        <th>+/-</th>
+      </tr>
+    </thead>
+    </tbody>
+      <tr>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="all-time-stats" class="mt-3 text-center">
+  <h3>All Time Stats</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Season</th>
+        <th>Games Played</th>
+        <th>Points</th>
+        <th>Goals</th>
+        <th>Assists</th>
+        <th>+/-</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @player.seasons.each do |stats| %>
+        <th scope="row"><%= stats.season %></th>
+        <td><%= stats.games_played %></td>
+        <td><%= stats.points %></td>
+        <td><%= stats.goals %></td>
+        <td><%= stats.assists %></td>
+        <td><%= stats.plus_minus %></td>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

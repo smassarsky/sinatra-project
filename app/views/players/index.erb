@@ -1,0 +1,73 @@
+<div class="pt-3" id="players">
+  <div class="d-flex justify-content-center">
+    <h4><%= @team.name %> Players</h4>
+    <% if current_user == @team.owner %>
+      <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/players/new" %>><button class="btn btn-sm btn-primary">New Player</button></a>
+    <% end %>
+  </div>
+
+
+  <% if !@team.players.empty? %>
+    <h5 class="pt-3 text-center">Active Players</h5>
+    <% if !@team.active_players.empty? %>
+
+      <table class="w-100 text-center">
+        <tr>
+          <th>Name</th>
+          <th>Jersey Number</th>
+          <th>Position</th>
+          <th>Actions</th>
+        </tr>
+        <% @team.active_players.each do |player| %>
+          <tr>
+            <td><%= player.name %></td>
+            <td><%= player.jersey_num %></td>
+            <td><%= player.position %></td>
+            <td>
+              <a href=<%= "/teams/#{@team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a>
+              <% if current_user == @team.owner %> 
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/delete" %>><button class="btn btn-sm btn-primary">Delete</button></a>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary">User Code</button></a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <p>No Active Players</p>
+    <% end %>
+
+    
+    <% if !@team.inactive_players.empty? %>
+      <h5 class="pt-3 text-center">Inactive Players</h5>
+
+      <table class="w-100 text-center">
+        <tr>
+          <th>Name</th>
+          <th>Jersey Number</th>
+          <th>Position</th>
+          <th>Actions</th>
+        </tr>
+        <% @team.inactive_players.each do |player| %>
+          <tr>
+            <td><%= player.name %></td>
+            <td><%= player.jersey_num %></td>
+            <td><%= player.position %></td>
+            <td>
+              <a href=<%= "/teams/#{@team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a>
+              <% if current_user == @team.owner %> 
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/delete" %>><button class="btn btn-sm btn-primary">Delete</button></a>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary">User Code</button></a>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+
+
+  <% else %>
+    <h4>No Players Yet</h4>
+  <% end %>

@@ -2,41 +2,60 @@
   <h2><%= @team.name %></h2>
 
   <% if current_user == @team.owner %>
-    <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/edit" %>>Edit Name</a>
-    <a class="my-auto" href=<%= "/teams/#{@team.id}/delete" %>>Delete Team</a>
+    <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Name</button></a>
+    <form class="my-auto" action=<%= "/teams/#{@team.id}" %> method="post">
+      <input id="hidden" type="hidden" name="_method" value="delete">
+      <button class="btn btn-sm btn-primary" type="submit">Delete Team</button>
+    </form>
   <% end %>
 </div>
 
-<div class="pt-3" id="current_season">
+<div class="pt-3 text-center" id="current_season">
   <% if @team.current_season %>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center pt-3">
       <h4>Current Season</h4>
+      <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/seasons" %>><button class="btn btn-sm btn-primary">All Seasons</button></a>
       <% if current_user == @team.owner %>
-        <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/seasons/new" %>>New Season</a>
+        <a class="my-auto" href=<%= "/teams/#{@team.id}/seasons/new" %>><button class="btn btn-sm btn-primary">New Season</button></a>
       <% end %>
     </div>
-    <table class="w-100">
-      <tr>
-        <th>Season</th>
-        <th>Next Game</th>
-        <th>Current Record</th>
-      </tr>
-      <tr>
-        <td><a href=<%= "/seasons/#{@team.current_season.id}" %>><%= @team.current_season.name %></a></td>
-        <td><%= @team.next_game %></td>
-        <td><%= @team.record %></td>
-      </tr>
+    <table class="mt-3 table">
+      <thead>
+        <tr>
+          <th>Season</th>
+          <th>Next Game</th>
+          <th>Current Record</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @team.current_season.name %></td>
+          <td><%= @team.next_game %></td>
+          <td><%= @team.record %></td>
+          <td>
+            <a href=<%= "/teams/#{@team.id}/seasons/#{@team.current_season.id}" %>><button class="btn btn-sm btn-primary">Season Page</button></a>
+            <% if current_user == @team.owner %>
+              <a href=<%= "/teams/#{@team.id}/seasons/#{@team.current_season.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+              <form class="d-inline-block" action=<%= "/teams/#{@team.id}/seasons" %> method="post">
+                <input id=<%= "hidden_season_#{@team.current_season.id}" %> type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+              </form>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
     </table>
   <% else %>
     <h4>No Seasons Yet - <a href=<%= "/teams/#{@team.id}/seasons/new" %>>Create a Season</a></h4>
   <% end %>
 </div>
 
-<div class="pt-3" id="players">
+<div class="pt-3 text-center" id="players">
   <div class="d-flex justify-content-center">
     <h4>Players</h4>
     <% if current_user == @team.owner %>
-      <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/players/new" %>>New Player</a>
+      <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/players/new" %>><button class="btn btn-sm btn-primary">New Player</button></a>
     <% end %>
   </div>
 
@@ -44,19 +63,35 @@
     <h5 class="pt-3 text-center">Active Players</h5>
     <% if !@team.active_players.empty? %>
 
-      <table class="w-75">
-        <tr>
-          <th>Name</th>
-          <th>Jersey Number</th>
-          <th>Position</th>
-        </tr>
-        <% @team.active_players.each do |player| %>
+      <table class="table">
+        <thead>
           <tr>
-            <td><%= player.name %></td>
-            <td><%= player.jersey_num %></td>
-            <td><%= player.position %></td>
+            <th>Name</th>
+            <th>Jersey Number</th>
+            <th>Position</th>
+            <th>Actions</th>
           </tr>
-        <% end %>
+        </thead>
+        <tbody>
+          <% @team.active_players.each do |player| %>
+            <tr>
+              <td><%= player.name %></td>
+              <td><%= player.jersey_num %></td>
+              <td><%= player.position %></td>
+              <td>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a>
+                <% if current_user == @team.owner %> 
+                  <a href=<%= "/teams/#{@team.id}/players/#{player.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+                  <form class="d-inline-block"action=<%= "/teams/#{@team.id}/players/#{player.id}" %> method="post">
+                    <input id=<%= "hidden_player_#{player.id}" %> type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                  </form>
+                  <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary">User Code</button></a>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
       </table>
     <% else %>
       <p>No Active Players</p>
@@ -64,13 +99,42 @@
 
     
     <% if !@team.inactive_players.empty? %>
-      <h5>Inactive Players</h5>
-      <ul>
-        <% @team.inactive_players.each do |player| %>
-          <li><%= player.name %></li>
-        <% end %>
-      </ul>
+      <h5 class="pt-3 text-center">Inactive Players</h5>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Jersey Number</th>
+            <th>Position</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @team.inactive_players.each do |player| %>
+            <tr>
+              <td><%= player.name %></td>
+              <td><%= player.jersey_num %></td>
+              <td><%= player.position %></td>
+              <td>
+                <a href=<%= "/teams/#{@team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a>
+                <% if current_user == @team.owner %> 
+                  <a href=<%= "/teams/#{@team.id}/players/#{player.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+                  <form class="d-inline-block"action=<%= "/teams/#{@team.id}/players/#{player.id}" %> method="post">
+                    <input id=<%= "hidden_player_#{player.id}" %> type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                  </form>
+                  <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary">User Code</button></a>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
+
+
+
   <% else %>
     <h4>No Players Yet</h4>
   <% end %>

@@ -1,19 +1,22 @@
 class TeamsController < ApplicationController
 
+  #index
   get '/teams' do
     redir_login_if_not_logged
     @user = current_user
     erb :'/teams/index'
   end
 
+  #new
   get '/teams/new' do
     redir_login_if_not_logged
     erb :'/teams/new'
   end
 
+  #create
   post '/teams' do
+    redir_login_if_not_logged
     team = Team.create(name: params[:team_name], owner: current_user)
-    binding.pry
     if team.errors.messages.empty?
       redirect "/teams/#{team.id}"
     else
@@ -21,6 +24,7 @@ class TeamsController < ApplicationController
     end
   end
 
+  #show
   get '/teams/:id' do
     redir_login_if_not_logged
     @team = Team.find(params[:id])
@@ -31,17 +35,19 @@ class TeamsController < ApplicationController
     end
   end
 
+  #edit
   get '/teams/:id/edit' do
     redir_login_if_not_logged
     @team = Team.find(params[:id])
-    redirect '/teams' if current_user != @team.owner
+    redirect '/teams' if !owner?(@team)
     erb :'/teams/edit'
   end
 
+  #update
   patch '/teams/:id' do
-    puts params
+    redir_login_if_not_logged
     @team = Team.find(params[:id])
-    if current_user == @team.owner
+    if owner?(@team)
       @team.update(name: params[:team_name])
       redirect "/teams/#{params[:id]}"
     else
@@ -49,8 +55,19 @@ class TeamsController < ApplicationController
     end
   end
 
+  #delete
   delete '/teams/:id' do
-
+    redir_login_if_not_logged
+    @team = Team.find(params[:id])
+    if owner?(@team)
+      @team.players.destroy_all
+      @team.games.destroy_all
+      @team.seasons.destroy_all
+      @team.destroy
+      redirect '/teams'
+    else
+      redirect '/error/you-cant-do-that'
+    end
   end
 
 end

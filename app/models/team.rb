@@ -30,17 +30,17 @@ class Team < ActiveRecord::Base
 
   def full_roster
     {
-      active: self.players.where(status: "Active"),
-      inactive: self.players.where(status: "Inactive")
+      active: self.players.where(status: "active"),
+      inactive: self.players.where(status: "inactive")
     }
   end
 
   def active_players
-    self.players.where(status: "Active")
+    self.players.where(status: "active")
   end
 
   def inactive_players
-    self.players.where(status: "Inactive")
+    self.players.where(status: "inactive")
   end
 
 end

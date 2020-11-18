@@ -1,0 +1,21 @@
+<h2>Edit Player</h2>
+<form action=<%= "/teams/#{@player.team.id}/players/#{@player.id}" %> method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <label for="name">Name:</label>
+  <input id="name" type="text" name="name" value="<%= @player.name %>">
+  <br>
+  <label for="jersey">Jersey Number:</label>
+  <input id="jersey" type="number" name="jersey" value="<%= @player.jersey_num %>">
+  <br>
+  <label for="position">Position:</label>
+  <select id="position" name="position">
+    <% positions.each do |position| %>
+      <option value="<%= position %>" <%= 'selected' if @player.position == position %>><%= position %></option>
+    <% end %>
+  </select>
+  <br>
+  <label for="active">Active:</label>
+  <input id="active" type="checkbox" name="active" value="true" <%= 'checked' if @player.status == "active" %>>
+  <br>
+  <button class="btn btn-primary" type="submit">Edit Player</button>
+</form>

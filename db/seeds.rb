@@ -17,7 +17,7 @@ game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afourt
 later_game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afifthteam", status: "TBP", home: true, game_datetime: DateTime.parse("2020-12-21 17:00:00 -0500"))
 
 
-seth_mallards = Player.find_or_create_by(name: "Seth", team: mallards, user: seth, position: "LW", jersey_num: 71, status: "Active")
+seth_mallards = Player.find_or_create_by(name: "Seth", team: mallards, user: seth, position: "LW", jersey_num: 71, status: "active")
 
 goal1 = Goal.find_or_create_by(game: game1, player: seth_mallards, team: mallards, period: 2, time_scored: "2:34")
 
