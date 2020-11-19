@@ -44,6 +44,10 @@ class ApplicationController < Sinatra::Base
       current_user == team.owner
     end
 
+    def current_season?(season)
+      season == season.team.current_season
+    end
+
   end
 
 end

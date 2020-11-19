@@ -1,3 +1,11 @@
 <h2>Create a Season</h2>
 
-<form action="/seasons
+<form action=<%= "/teams/#{@team.id}/seasons" %> method="post">
+  <label for="season-name">Season Name: </label>
+  <input id="season-name" type="text" name="season_name">
+  <br>
+  <label for="current-season">Current Season</label>
+  <input id="current-season" type="checkbox" name="current_season" value="true">
+  <br>
+  <button class="btn btn-sm btn-primary" type="submit">Create Season</button>
+</form>

@@ -47,7 +47,13 @@
       </tbody>
     </table>
   <% else %>
-    <h4>No Seasons Yet - <a href=<%= "/teams/#{@team.id}/seasons/new" %>>Create a Season</a></h4>
+    <div class="d-flex justify-content-center">
+      <h4>No Current Season Set</h4>
+      <a class="mx-3" href=<%= "/teams/#{@team.id}/seasons" %>><button class="btn btn-sm btn-primary">All Seasons</button></a>
+      <% if owner?(@team) %>
+        <a href=<%= "/teams/#{@team.id}/seasons/new" %>><button class="btn btn-sm btn-primary">New Season</button></a>
+      <% end %>
+    </div>
   <% end %>
 </div>
 

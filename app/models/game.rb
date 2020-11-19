@@ -6,4 +6,9 @@ class Game < ActiveRecord::Base
   has_many :users, through: :players
   has_many :goals
   has_many :penalties
+
+  def score
+
+  end
+
 end

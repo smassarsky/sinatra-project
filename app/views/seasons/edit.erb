@@ -1,0 +1,12 @@
+<h2>Edit Season</h2>
+
+<form action=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}" %> method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <label for="season-name">Season Name: </label>
+  <input id="season-name" type="text" name="season_name" value="<%= @season.name %>">
+  <br>
+  <label for="current-season">Current Season</label>
+  <input id="current-season" type="checkbox" name="current_season" value="true" <%= 'checked' if current_season?(@season) %>>
+  <br>
+  <button class="btn btn-sm btn-primary" type="submit">Update Season</button>
+</form>

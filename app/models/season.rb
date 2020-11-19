@@ -18,7 +18,13 @@ class Season < ActiveRecord::Base
   end
 
   def next_game
-    self.games.where('game_datetime > ?', DateTime.now).min{|a, b| a.game_datetime <=> b.game_datetime}
+    games = self.games.where('game_datetime > ?', DateTime.now)
+    if games.empty?
+      "None Scheduled"
+    else
+      selection = games.min{|a, b| a.game_datetime <=> b.game_datetime}
+      "#{selection.game_datetime} #{selection.home ? 'vs' : 'at'} #{selection.opponent}"
+    end
   end
 
 end

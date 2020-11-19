@@ -23,8 +23,7 @@ class Team < ActiveRecord::Base
     if !self.current_season
       "-"
     else
-      selection = self.current_season.next_game
-      "#{selection.game_datetime} #{selection.home ? 'vs' : 'at'} #{selection.opponent}"
+      self.current_season.next_game
     end
   end
 
