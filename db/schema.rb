@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
     t.integer "season_id"
     t.string "opponent"
     t.string "status"
-    t.boolean "home"
+    t.string "place"
     t.datetime "game_datetime"
   end
 

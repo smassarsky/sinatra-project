@@ -1,0 +1,8 @@
+<div class="mt-3 text-center">
+  <h2>Add Goal to <%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+
+  <form action=<%= "/games/#{@game.id}/goals" %> method="post">
+    
+    <button class="btn btn-primary" type="submit">Add Goal</button>
+  </form>
+</div>

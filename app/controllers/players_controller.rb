@@ -31,7 +31,7 @@ class PlayersController < ApplicationController
     elsif !positions.include?(params[:position])
       redirect '/error/invalid-position'
     else
-      player = Player.create(name: params[:name], team: team, position: params[:position], jersey_num: params[:jersey], status: params[:active] ? "active" : "inactive")
+      player = Player.create(name: params[:name], team: team, position: params[:position], jersey_num: params[:jersey], status: params[:active] ? "active" : "inactive", user: params[:owner] ? current_user : nil)
       if player.errors.messages.empty?
         redirect "/teams/#{params[:id]}"
       else
@@ -73,6 +73,9 @@ class PlayersController < ApplicationController
       redirect '/error/invalid-position'
     else
       player.update(name: params[:name], team: player.team, position: params[:position], jersey_num: params[:jersey], status: params[:active] ? "active" : "inactive")
+      if (params[:owner] && player.user == nil) || (!params[:owner] && player.user == current_user)
+        player.update(user: params[:owner] ? current_user : nil)
+      end
       if player.errors.messages.empty?
         redirect "/teams/#{player.team.id}"
       else

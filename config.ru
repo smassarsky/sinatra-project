@@ -12,3 +12,5 @@ use TeamsController
 use PlayersController
 use SeasonsController
 use GamesController
+use GoalsController
+use PenaltiesController

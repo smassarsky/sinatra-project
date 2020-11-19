@@ -20,7 +20,7 @@
           <tr>
             <td><a href=<%= "/teams/#{@team.id}/seasons/#{season.id}" %>><%= season.name %></a><%= " (Current)" if current_season?(season) %></td>
             <td><%= current_season?(season) ? season.next_game : "-" %></td>
-            <td><%= season.record %></td>
+            <td><%= season.record_parsed %></td>
             <td>
               <a href=<%= "/teams/#{@team.id}/seasons/#{season.id}" %>><button class="btn btn-sm btn-primary">Season Page</button></a>
               <% if owner?(@team) %>

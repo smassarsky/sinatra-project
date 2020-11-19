@@ -13,7 +13,7 @@ class Team < ActiveRecord::Base
 
   def record
     if self.current_season
-      self.current_season.record
+      parse_record(self.current_season.record)
     else
       "-"
     end

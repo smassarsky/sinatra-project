@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   get '/signup' do
-    redirect '/home' if is_logged_in?
+    redirect '/dashboard' if is_logged_in?
     erb :'/sessions/signup'
   end
 

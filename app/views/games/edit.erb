@@ -1,0 +1,26 @@
+<h2>Edit Game - <%= @game.season.name %></h2>
+
+<form action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}" %> method="post">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+  <label for="datetime">Date and Time:</label>
+  <input id="datetime" type="datetime-local" name="datetime" value=<%= @game.game_datetime.strftime("%FT%R") %>>
+  <br>
+  <label for="opponent">Opponent Name:</label>
+  <input id="opponent" type="text" name="opponent" value="<%= @game.opponent %>">
+  <br>
+  <label for="at">Home or Away:</label>
+  <select id="at" name="at">
+    <% home_away_options.each do |option| %>
+      <option value=<%= option %> <%= 'selected' if option == @game.place %>><%= option %></option>
+    <% end %>
+  </select>
+  <br>
+  <label for="status">Status:</label>
+  <select id="status" name="status">
+    <% game_statuses.each do |option| %>
+      <option value=<%= option %> <%= 'selected' if option == @game.status %>><%= option %></option>
+    <% end %>
+  </select>
+  <br>
+  <button class="btn btn-primary" type="submit">Edit Game</button>
+</form>

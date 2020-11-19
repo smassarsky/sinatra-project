@@ -1,5 +1,5 @@
 <div id="season" class="mt-3 text-center">
-  <h2><%= @season.team.name %> - <%= @season.name %> Season</h2>
+  <h2><%= @season.team.name %> - <%= @season.name %> Season - (<%= @season.record_parsed %>)</h2>
 
   <div class="my-3 d-flex justify-content-center">
     <h3>Games</h3>
@@ -27,13 +27,13 @@
             <td><%= index + 1 %></td>
             <td><%= game.game_datetime %></td>
             <td><%= game.opponent %></td>
-            <td><%= game.home ? "Home" : "Away" %></td>
+            <td><%= game.place %></td>
             <td><%= game.status %></td>
             <td><%= game.score %></td>
             <td>
-              <a href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}/edit" %>><button class="btn btn-sm btn-primary">Game Page</button></a>
+              <a href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}" %>><button class="btn btn-sm btn-primary">Game Page</button></a>
               <% if owner?(@season.team) %>
-                <a href=<%= "" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
+                <a href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
                 <form class="d-inline-block" action=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}" %> method="post">
                   <input id=<%= "hidden_#{game.id}" %> type="hidden" name="_method" value="delete">
                   <button class="btn btn-sm btn-primary" type="submit">Delete</button>

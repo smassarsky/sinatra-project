@@ -1,42 +1,55 @@
-<h1>Your Teams - <a href="/teams/new">(Create a Team)</a></h1>
+<div class="mt-3 text-center">
+  <div class="d-flex justify-content-center">
+    <h1>Your Teams</h1>
+    <a class="my-auto mx-3" href="/teams/new"><button class="btn btn-sm btn-primary">Create a Team</button></a>
+  </div>
 
-<% if @user.teams_owned || @user.teams_played_for%>
-  <% if @user.teams_owned %>
-    <h2>Teams You Manage</h2>
-    <table>
-      <tr>
-        <th>Team</th>
-        <th>Next Game</th>
-        <th>Current Record</th>
-      </tr>
-      <% @user.teams_owned.each do |team|%>
-        <tr>
-          <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
-          <td><%= team.next_game %></td>
-          <td><%= team.record %></td>
-        </tr>
-      <% end %>
-    </table>
+  <% if @user.teams_owned || @user.teams_played_for%>
+    <% if @user.teams_owned %>
+      <h2>Teams You Manage</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Next Game</th>
+            <th>Current Record</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @user.teams_owned.each do |team|%>
+            <tr>
+              <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+              <td><%= team.next_game %></td>
+              <td><%= team.record %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+    <% if @user.teams_played_for %>
+      <h2>Teams You Play For</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Next Game</th>
+            <th>Current Record</th>
+          </tr>
+        </thead>
+          <tbody>
+          <% @user.teams_played_for.each do |team|%>
+            <tr>
+              <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+              <td><%= team.next_game %></td>
+              <td><%= team.record %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% else %>
+
+    <h2>No Teams Found</h2>
+
   <% end %>
-  <% if @user.teams_played_for %>
-    <h2>Teams You Play For</h2>
-    <table>
-      <tr>
-        <th>Team</th>
-        <th>Next Game</th>
-        <th>Current Record</th>
-      </tr>
-      <% @user.teams_owned.each do |team|%>
-        <tr>
-          <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
-          <td><%= team.next_game %></td>
-          <td><%= team.record %></td>
-        </tr>
-      <% end %>
-    </table>
-  <% end %>
-<% else %>
-
-  <h2>No Teams Found</h2>
-
-<% end %>
+</div>

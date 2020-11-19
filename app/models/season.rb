@@ -1,6 +1,7 @@
 class Season < ActiveRecord::Base
   belongs_to :team
   has_many :players, through: :team
+  has_one :owner, through: :team
   has_many :games
   has_many :goals, through: :games
   has_many :penalties, through: :games
@@ -9,7 +10,11 @@ class Season < ActiveRecord::Base
   validates :team_id, presence: true
 
   def record
-    count = self.games.group(:status).count
+    self.games.group(:status).count
+  end
+
+  def record_parsed
+    count = self.record
     "#{count["Win"] ||= 0} - #{count["Loss"] ||= 0} - #{count["OTL"] ||= 0}"
   end
 
@@ -23,7 +28,7 @@ class Season < ActiveRecord::Base
       "None Scheduled"
     else
       selection = games.min{|a, b| a.game_datetime <=> b.game_datetime}
-      "#{selection.game_datetime} #{selection.home ? 'vs' : 'at'} #{selection.opponent}"
+      "#{selection.game_datetime} #{selection.place == "Away" ? 'at' : 'vs'} #{selection.opponent}"
     end
   end
 

@@ -25,7 +25,7 @@ class AddTeamAndPlayerClasses < ActiveRecord::Migration[6.0]
       t.integer :season_id
       t.string :opponent
       t.string :status
-      t.boolean :home
+      t.string :place
       t.datetime :game_datetime
     end
 

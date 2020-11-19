@@ -48,6 +48,18 @@ class ApplicationController < Sinatra::Base
       season == season.team.current_season
     end
 
+    def game_statuses
+      ["TBP", "Win", "Loss", "OTL"]
+    end
+
+    def home_away_options
+      ["Home", "Away"]
+    end
+
+    def parse_record(record)
+      "#{record["Win"] ||= 0} - #{record["Loss"] ||= 0} - #{record["OTL"] ||= 0}"
+    end
+
   end
 
 end

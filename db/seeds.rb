@@ -9,12 +9,12 @@ winter2020 = Season.find_or_create_by(name: "Winter 2020", team: mallards)
 mallards.current_season = winter2020
 mallards.save
 
-game1 = Game.find_or_create_by(season: winter2020, opponent: "someteam", status: "Win", home: true, game_datetime: DateTime.parse("2020-11-10 17:00:00 -0500"))
-game2 = Game.find_or_create_by(season: winter2020, opponent: "anotherteam", status: "Loss", home: false, game_datetime: DateTime.parse("2020-11-14 17:00:00 -0500"))
-game3 = Game.find_or_create_by(season: winter2020, opponent: "athirdteam", status: "OTL", home: true, game_datetime: DateTime.parse("2020-11-16 17:00:00 -0500"))
+game1 = Game.find_or_create_by(season: winter2020, opponent: "someteam", status: "Win", place: "Home", game_datetime: DateTime.parse("2020-11-10 17:00:00 -0500"))
+game2 = Game.find_or_create_by(season: winter2020, opponent: "anotherteam", status: "Loss", place: "Away", game_datetime: DateTime.parse("2020-11-14 17:00:00 -0500"))
+game3 = Game.find_or_create_by(season: winter2020, opponent: "athirdteam", status: "OTL", place: "Home", game_datetime: DateTime.parse("2020-11-16 17:00:00 -0500"))
 
-game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afourthteam", status: "TBP", home: false, game_datetime: DateTime.parse("2020-12-20 17:00:00 -0500"))
-later_game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afifthteam", status: "TBP", home: true, game_datetime: DateTime.parse("2020-12-21 17:00:00 -0500"))
+game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afourthteam", status: "TBP", place: "Away", game_datetime: DateTime.parse("2020-12-20 17:00:00 -0500"))
+later_game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "afifthteam", status: "TBP", place: "Home", game_datetime: DateTime.parse("2020-12-21 17:00:00 -0500"))
 
 
 seth_mallards = Player.find_or_create_by(name: "Seth", team: mallards, user: seth, position: "LW", jersey_num: 71, status: "active")
