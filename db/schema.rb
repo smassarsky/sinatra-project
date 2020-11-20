@@ -28,9 +28,16 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
   create_table "goals", force: :cascade do |t|
     t.integer "game_id"
     t.integer "player_id"
+    t.integer "assist_1_id"
+    t.integer "assist_2_id"
     t.integer "team_id"
     t.integer "period"
     t.string "time_scored"
+  end
+
+  create_table "on_ice_for_goal", force: :cascade do |t|
+    t.integer "goal_id"
+    t.integer "player_id"
   end
 
   create_table "penalties", force: :cascade do |t|

@@ -90,4 +90,31 @@ class GamesController < ApplicationController
     end
   end
 
+  get '/games/:game_id/players' do
+    redir_login_if_not_logged
+    @game = Game.find(params[:game_id])
+    if @game && owner?(@game)
+      erb :'/games/gameplayers'
+    elsif @game
+      redirect '/error/you-cant-edit-this'
+    else
+      redirect '/error/invalid-game'
+    end
+  end
+
+  post '/games/:game_id/players' do
+    redir_login_if_not_logged
+    game = Game.find(params[:game_id])
+    if game && owner?(game)
+
+      game.update(players: Player.find(params[:player_ids]).select{|player| owner?(player)})
+      redirect "/teams/#{game.team.id}/seasons/#{game.season.id}/games/#{game.id}"
+
+    elsif game
+      redirect '/error/you-cant-edit-this'
+    else
+      redirect '/error/invalid-game'
+    end
+  end
+
 end

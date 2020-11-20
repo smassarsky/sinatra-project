@@ -19,6 +19,11 @@ later_game_to_be_played = Game.find_or_create_by(season: winter2020, opponent: "
 
 seth_mallards = Player.find_or_create_by(name: "Seth", team: mallards, user: seth, position: "LW", jersey_num: 71, status: "active")
 
+matt_mallards = Player.find_or_create_by(name: "Matt", team: mallards, position: "D", jersey_num: 54, status: "active")
+lewin_mallards = Player.find_or_create_by(name:"Lewin", team: mallards, position: "RW", jersey_num: 76, status: "active")
+thomas_mallards = Player.find_or_create_by(name: "Thomas", team: mallards, position: "RW", jersey_num: 88, status: "active")
+fitz_mallards = Player.find_or_create_by(name: "Fitz", team: mallards, position: "C", jersey_num: 55, status: "active")
+
 goal1 = Goal.find_or_create_by(game: game1, player: seth_mallards, team: mallards, period: 2, time_scored: "2:34")
 
 penalty1 = Penalty.find_or_create_by(game: game1, player: seth_mallards, team: mallards, period: 2, time_committed: "2:34", length: 2, infraction: "slashing")

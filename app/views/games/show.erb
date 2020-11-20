@@ -9,10 +9,39 @@
 
 
   <h2>Details</h2>
+  
+  <div class="my-3 d-flex justify-content-center">
+    <h3>Players</h3>
+    <% if owner?(@game) %>
+      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/players" %>><button class="btn btn-sm btn-primary">Add Players</button></a>
+    <% end %>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Goals</th>
+        <th>Assists</th>
+        <th>+/-</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @game.players.each do |player| %>
+        <tr>
+          <td><%= player.name %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
   <div class="my-3 d-flex justify-content-center">
     <h3>Goals</h3>
     <% if owner?(@game) %>
-      <a class="mx-3" href=<%= "/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
+      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
     <% end %>
   </div>
   <table class="table">
@@ -27,7 +56,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr><th colspan="7">First Period</th></tr>
+      <tr><th colspan="6">First Period</th></tr>
+        <% @game.goals.where(period: "1st").order(:time_scored).each do |goal| %>
+          <td><%= goal.time_scored %></td>
+          <td><%= goal.team ? goal.team.name : @game.opponent %></td>
+          <td><%= goal.player ? goal.player.name : "-" %></td>
+          <td><%= goal.assist_1 ? goal.assist_1.name : "-" %></td>
+          <td><%= goal.assist_2 ? goal.assist_2.name : "-" %></td>
+          <td><%= "-" %></td>
+        <% end %>
+      <tr><th colspan="6">Second Period</th></tr>
+
+      <tr><th colspan="6">Third Period</th></tr>
 
     </tbody>
   </table>
@@ -35,7 +75,7 @@
   <div class="my-3 d-flex justify-content-center">
     <h3>Penalties</h3>
     <% if owner?(@game) %>
-      <a class="mx-3" href=<%= "/games/#{@game.id}/penalties/new" %>><button class="btn btn-sm btn-primary">Add Penalty</button></a>
+      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/penalties/new" %>><button class="btn btn-sm btn-primary">Add Penalty</button></a>
     <% end %>
   </div>
   <table class="table">
@@ -50,6 +90,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr><th colspan="7">First Period</th></tr>
+
+      <tr><th colspan="7">Second Period</th></tr>
+
+      <tr><th colspan="7">Third Period</th></tr>
 
     </tbody>
   </table>

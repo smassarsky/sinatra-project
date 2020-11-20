@@ -60,6 +60,10 @@ class ApplicationController < Sinatra::Base
       "#{record["Win"] ||= 0} - #{record["Loss"] ||= 0} - #{record["OTL"] ||= 0}"
     end
 
+    def periods
+      ["1st", "2nd", "3rd", "OT", "S/O", "OT1", "OT2", "OT3"]
+    end
+
   end
 
 end

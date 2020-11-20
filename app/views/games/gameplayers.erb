@@ -1,0 +1,14 @@
+<div class="my-3 text-center">
+  <h2>Add Players to Game: <%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+
+  <form action=<%= "/games/#{@game.id}/players" %> method="post">
+    <label for="players">Select Players(Hold CTRL / CMD for Multiple):</label>
+    <br>
+      <% @game.team.players.order(:active).each do |player| %>
+        <label><%= "#{player.name} - #{player.status}" %></label>
+        <input type="checkbox" name="player_ids[]" value="<%= player.id %>" <%= 'checked' if @game.players.include?(player) %>>
+        <br>
+      <% end %>
+    <button class="mt-3 btn btn-primary" type="submit">Set Players</button>
+  </form>
+</div>
