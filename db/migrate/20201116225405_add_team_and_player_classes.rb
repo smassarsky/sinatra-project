@@ -53,7 +53,7 @@ class AddTeamAndPlayerClasses < ActiveRecord::Migration[6.0]
       t.integer :player_id
     end
 
-    create_table :on_ice_for_goal do |t|
+    create_table :on_ice_for_goals do |t|
       t.integer :goal_id
       t.integer :player_id
     end

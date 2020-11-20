@@ -1,7 +1,7 @@
 <div class="my-3 text-center">
   <h2>Add Players to Game: <%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
 
-  <form action=<%= "/games/#{@game.id}/players" %> method="post">
+  <form action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/players" %> method="post">
     <label for="players">Select Players(Hold CTRL / CMD for Multiple):</label>
     <br>
       <% @game.team.players.order(:active).each do |player| %>

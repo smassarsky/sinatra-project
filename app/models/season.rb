@@ -4,6 +4,8 @@ class Season < ActiveRecord::Base
   has_one :owner, through: :team
   has_many :games
   has_many :goals, through: :games
+  has_many :on_ice_for_goals, through: :goals
+  has_many :on_ice_for_goal_players, through: :on_ice_for_goals
   has_many :penalties, through: :games
 
   validates :name, presence: true

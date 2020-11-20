@@ -90,7 +90,7 @@ class GamesController < ApplicationController
     end
   end
 
-  get '/games/:game_id/players' do
+  get '/teams/:team_id/seasons/:season_id/games/:game_id/players' do
     redir_login_if_not_logged
     @game = Game.find(params[:game_id])
     if @game && owner?(@game)
@@ -102,7 +102,7 @@ class GamesController < ApplicationController
     end
   end
 
-  post '/games/:game_id/players' do
+  post '/teams/:team_id/seasons/:season_id/games/:game_id/players' do
     redir_login_if_not_logged
     game = Game.find(params[:game_id])
     if game && owner?(game)

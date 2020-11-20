@@ -1,13 +1,12 @@
 <div class="mt-3 text-center">
   <h2>Edit Goal for <%= "#{@goal.game.team.name} - #{@goal.game.season.name} - Game #{@goal.game.game_of_season}" %></h2>
 
-  <form action=<%= "/games/#{@goal.game.id}/goals/#{@goal.id}" %> method="post">
+  <form action=<%= "/teams/#{@goal.season.team.id}/seasons/#{@goal.season.id}/games/#{@goal.game.id}/goals/#{@goal.id}" %> method="post">
     <input id="hidden_method" type="hidden" name="_method" value="patch">
-    <input id="hidden_game" type="hidden" name="goal[game_id]" value="<%= @goal.game.id %>">
     <label for="team">Team:</label>
     <select id="team" name="goal[team_id]">
-      <option value="<%= @goal.game.team.id %>"<%= 'selected' if @goal.team.id == @goal.game.team.id %>><%= @goal.game.team.name %></option>
-      <option value="nil" <%= 'selected' if !@goal.team.id == @goal.game.team.id %>><%= @goal.game.opponent %></option>
+      <option value="<%= @goal.game.team.id %>"<%= 'selected' if @goal.team != nil %>><%= @goal.game.team.name %></option>
+      <option value="nil" <%= 'selected' if @goal.team == nil %>><%= @goal.game.opponent %></option>
     </select>
     <br>
     <label for="goal_player">Player:</label>

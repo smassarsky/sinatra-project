@@ -8,6 +8,8 @@ class Game < ActiveRecord::Base
   has_many :goals
   has_many :assists, through: :goals
   has_many :assist_players, through: :goals
+  has_many :on_ice_for_goals, through: :goals
+  has_many :on_ice_for_goals_players, through: :on_ice_for_goals
   has_many :penalties
 
   def save

@@ -1,1 +1,39 @@
-new.erb
+<div class="mt-3 text-center">
+  <h2>Add Penalty to <%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+
+  <form action=<%= "/teams/#{@game.season.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties" %> method="post">
+    <input id="hidden_game" type="hidden" name="penalty[game_id]" value="<%= @game.id %>">
+    <label for="team">Team:</label>
+    <select id="team" name="penalty[team_id]">
+      <option value="<%= @game.team.id %>"><%= @game.team.name %></option>
+      <option value="nil"><%= @game.opponent %></option>
+    </select>
+    <br>
+    <label for="penalty_player">Player:</label>
+    <select id="penalty_player" name="penalty[player_id]">
+      <option value=""></option>
+      <% @game.players.each do |player| %>
+        <option value=<%= player.id %>><%= "#{player.jersey_num} - #{player.name}" %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="penalty_length">Duration(mins):</label>
+    <input id="penalty_length" type=number name="penalty[length]" min="0" max="10">
+    <br>
+    <label for="infraction">Infraction:</label>
+    <input id="infraction" type=text name="penalty[infraction]">
+    <br>
+    <label for="period">Period:</label>
+    <select id="period" name="penalty[period]">
+      <% periods.each_with_index do |period, index| %>
+        <option value="<%= index + 1 %>"><%= period %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="time_minutes">Time:</label>
+    <input id="time_minutes" type="number" name="time_minutes" min="0" max="20"> :
+    <input id="time_seconds" type="number" name="time_seconds" min="0" max="59">
+    <br>
+    <button class="btn btn-primary" type="submit">Add Penalty</button>
+  </form>
+</div>

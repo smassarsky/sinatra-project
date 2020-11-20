@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
     t.string "time_scored"
   end
 
-  create_table "on_ice_for_goal", force: :cascade do |t|
+  create_table "on_ice_for_goals", force: :cascade do |t|
     t.integer "goal_id"
     t.integer "player_id"
   end

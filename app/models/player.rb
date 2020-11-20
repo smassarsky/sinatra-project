@@ -10,6 +10,8 @@ class Player < ActiveRecord::Base
   has_many :penalties
   has_many :game_players
   has_many :games_played, through: :game_players, source: "game"
+  has_many :on_ice_for_goals
+  has_many :plus_minuses, through: :on_ice_for_goals, source: "goals"
 
   validates :name, presence: true
   validates :team_id, presence: true
@@ -21,7 +23,12 @@ class Player < ActiveRecord::Base
   end
 
   def count_assists(thing)
-    thing.assists.where(player:self).count
+    thing.assists.where(player: self).count
+  end
+
+  def plus_minus(thing)
+    all_goals = thing.on_ice_for_goals.where(player: self)
+    all_goals.count{|on_ice| on_ice.goal.team != nil} - all_goals.count{|on_ice| on_ice.goal.team == nil}
   end
 
 end

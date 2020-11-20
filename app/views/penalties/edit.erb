@@ -1,1 +1,39 @@
-edit.erb
+<div class="mt-3 text-center">
+  <h2>Edit Penalty for <%= "#{@penalty.game.team.name} - #{@penalty.game.season.name} - Game #{@penalty.game.game_of_season}" %></h2>
+
+  <form action=<%= "/teams/#{@penalty.game.season.team.id}/seasons/#{@penalty.game.season.id}/games/#{@penalty.game.id}/penalties/#{@penalty.id}" %> method="post">
+    <input id="hidden" type="hidden" name="_method" value="patch">
+    <label for="team">Team:</label>
+    <select id="team" name="penalty[team_id]">
+      <option value="<%= @penalty.game.team.id %>" <%= 'selected' if @penalty.team != nil %>><%= @penalty.game.team.name %></option>
+      <option value="nil" <%= 'selected' if @penalty.team == nil %>><%= @penalty.game.opponent %></option>
+    </select>
+    <br>
+    <label for="penalty_player">Player:</label>
+    <select id="penalty_player" name="penalty[player_id]">
+      <option value=""></option>
+      <% @penalty.game.players.each do |player| %>
+        <option value=<%= player.id %> <%= 'selected' if @penalty.player == player %>><%= "#{player.jersey_num} - #{player.name}" %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="penalty_length">Duration(mins):</label>
+    <input id="penalty_length" type=number name="penalty[length]" min="0" max="10" value="<%= @penalty.length %>">
+    <br>
+    <label for="infraction">Infraction:</label>
+    <input id="infraction" type=text name="penalty[infraction]" value="<%= @penalty.infraction %>">
+    <br>
+    <label for="period">Period:</label>
+    <select id="period" name="penalty[period]">
+      <% periods.each_with_index do |period, index| %>
+        <option value="<%= index + 1 %>" <%= 'selected' if @penalty.period == index + 1 %>><%= period %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="time_minutes">Time:</label>
+    <input id="time_minutes" type="number" name="time_minutes" min="0" max="20" value="<%= @penalty.time_committed.split(":")[0] %>"> :
+    <input id="time_seconds" type="number" name="time_seconds" min="0" max="59" value="<%= @penalty.time_committed.split(":")[1] %>">
+    <br>
+    <button class="btn btn-primary" type="submit">Edit Penalty</button>
+  </form>
+</div>

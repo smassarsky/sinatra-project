@@ -1,8 +1,13 @@
 <div class="mt-3 text-center">
   <div class="d-flex justify-content-center">
     <h2><%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+    <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}" %>><button class="btn btn-sm btn-primary">Back to Season</button></a>
     <% if owner?(@game) %>
-      <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
+      <a class="mr-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
+      <form class="my-auto" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}" %> method="post">
+        <input id="hidden" type="hidden" name="_method" value="delete">
+        <button class="btn btn-sm btn-primary">Delete Game</button>
+      </form>
     <% end %>
   </div>
 
@@ -19,7 +24,7 @@
   <div class="my-3 d-flex justify-content-center">
     <h3>Players</h3>
     <% if owner?(@game) %>
-      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/players" %>><button class="btn btn-sm btn-primary">Add Players</button></a>
+      <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/players" %>><button class="btn btn-sm btn-primary">Add Players</button></a>
     <% end %>
   </div>
 
@@ -30,6 +35,7 @@
         <th>Goals</th>
         <th>Assists</th>
         <th>+/-</th>
+        <th>PIM</th>
       </tr>
     </thead>
     <tbody>
@@ -39,6 +45,7 @@
           <td><%= player.count_goals(@game) %></td>
           <td><%= player.count_assists(@game) %></td>
           <td></td>
+          <td>PIM</td>
         </tr>
       <% end %>
     </tbody>
@@ -47,8 +54,8 @@
   <div class="my-3 d-flex justify-content-center">
     <h3>Goals</h3>
     <% if owner?(@game) %>
-      <% cols = "7" %>
-      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
+      <% cols = 7 %>
+      <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
     <% else %>
       <% cols = "6" %>
     <% end %>
@@ -79,11 +86,21 @@
               <td><%= goal.player ? goal.player.name : "-" %></td>
               <td><%= goal.assist_players[0] ? goal.assist_players[0].name : "-" %></td>
               <td><%= goal.assist_players[1] ? goal.assist_players[1].name : "-" %></td>
-              <td><%= "-" %></td>
+              <% if !goal.on_ice_for_goal_players.empty? %>
+                <td>
+                  <% goal.on_ice_for_goal_players.each do |player| %>
+                    <label for="<%= player.name %>"><%= player.name %></label>
+                    <i id="<%= player.name %>" class="fa fa-user"></i>
+                  <% end %>
+                </td>
+              <% else %>
+                <td> - </td>
+              <% end %>
+
               <% if owner?(@game) %>
                 <td>
-                  <a href=<%= "/games/#{@game.id}/goals/#{goal.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Goal</button></a>
-                  <form class="d-inline-block" action=<%= "/games/#{@game.id}/goals/#{goal.id}" %> method="post">
+                  <a href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/#{goal.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Goal</button></a>
+                  <form class="d-inline-block" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/#{goal.id}" %> method="post">
                     <input id=<%= "hidden_goal_#{goal.id}" %> type="hidden" name="_method" value="delete">
                     <button type="submit" class="btn btn-sm btn-primary">Delete Goal</button>
                   </form>
@@ -100,27 +117,48 @@
   <div class="my-3 d-flex justify-content-center">
     <h3>Penalties</h3>
     <% if owner?(@game) %>
-      <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/penalties/new" %>><button class="btn btn-sm btn-primary">Add Penalty</button></a>
+      <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties/new" %>><button class="btn btn-sm btn-primary">Add Penalty</button></a>
     <% end %>
   </div>
   <table class="table">
     <thead>
       <tr>
-        <th>Period</th>
         <th>Time Recorded</th>
         <th>Team</th>
         <th>Player</th>
         <th>Infraction</th>
         <th>Time In Box</th>
+        <% if owner?(@game) %>
+          <th>Actions</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
-      <tr><th colspan=<%= cols %>>First Period</th></tr>
+      <% periods.each_with_index do |period, index| %>
+        <% period_penalties = @game.penalties.where(period: index + 1) %>
+        <% if !period_penalties.empty? %>
+          <tr><th colspan=<%= cols - 1 %>><%= periods[index] %><%= " Period" if [0, 1, 2].include?(index) %></th></tr>
+          <% period_penalties.order(:time_committed).each do |penalty| %>
+            <tr>
+              <td><%= penalty.time_committed %></td>
+              <td><%= penalty.team ? penalty.team.name : @game.opponent %></td>
+              <td><%= penalty.player ? penalty.player.name : "-" %></td>
+              <td><%= penalty.infraction ? penalty.infraction : "-" %></td>
+              <td><%= penalty.length ? penalty.length : "-" %></td>
+              <% if owner?(@game) %>
+                <td>
+                  <a href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties/#{penalty.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Penalty</button></a>
+                  <form class="d-inline-block" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties/#{penalty.id}" %> method="post">
+                    <input id=<%= "hidden_penalty_#{penalty.id}" %> type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-sm btn-primary">Delete Penalty</button>
+                  </form>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
 
-      <tr><th colspan=<%= cols %>>Second Period</th></tr>
-
-      <tr><th colspan=<%= cols %>>Third Period</th></tr>
-
+        <% end %>
+      <% end %>
     </tbody>
   </table>
 </div>
