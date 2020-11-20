@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  include ActiveModel::Validations
   has_secure_password
   has_many :teams_owned, class_name: "Team", foreign_key: "owner_id"
   has_many :players

@@ -2,14 +2,15 @@
   <h2>Add Goal to <%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
 
   <form action=<%= "/games/#{@game.id}/goals" %> method="post">
+    <input id="hidden_game" type="hidden" name="goal[game_id]" value="<%= @game.id %>">
     <label for="team">Team:</label>
-    <select id="team" name="team">
-      <option value="us"><%= @game.team.name %></option>
-      <option value="them"><%= @game.opponent %></option>
+    <select id="team" name="goal[team_id]">
+      <option value="<%= @game.team.id %>"><%= @game.team.name %></option>
+      <option value="nil"><%= @game.opponent %></option>
     </select>
     <br>
     <label for="goal_player">Player:</label>
-    <select id="goal_player" name="player_id">
+    <select id="goal_player" name="goal[player_id]">
       <option value=""></option>
       <% @game.players.each do |player| %>
         <option value=<%= player.id %>><%= "#{player.jersey_num} - #{player.name}" %></option>
@@ -17,7 +18,7 @@
     </select>
     <br>
     <label for="assist_1_player">Assist 1:</label>
-    <select id="assist_1_player" name="assist_1_id">
+    <select id="assist_1_player" name="goal[assist_player_ids][]">
       <option value=""></option>
       <% @game.players.each do |player| %>
         <option value=<%= player.id %>><%= "#{player.jersey_num} - #{player.name}" %></option>
@@ -25,7 +26,7 @@
     </select>
     <br>
     <label for="assist_2_player">Assist 2:</label>
-    <select id="assist_2_player" name="assist_2_id">
+    <select id="assist_2_player" name="goal[assist_player_ids][]">
       <option value=""></option>
       <% @game.players.each do |player| %>
         <option value=<%= player.id %>><%= "#{player.jersey_num} - #{player.name}" %></option>
@@ -33,9 +34,9 @@
     </select>
     <br>
     <label for="period">Period:</label>
-    <select id="period" name="period">
-      <% periods.each do |period| %>
-        <option value=<%= period %>><%= period %></option>
+    <select id="period" name="goal[period]">
+      <% periods.each_with_index do |period, index| %>
+        <option value="<%= index + 1 %>"><%= period %></option>
       <% end %>
     </select>
     <br>

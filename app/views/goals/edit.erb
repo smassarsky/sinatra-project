@@ -1,1 +1,50 @@
-edit.erb
+<div class="mt-3 text-center">
+  <h2>Edit Goal for <%= "#{@goal.game.team.name} - #{@goal.game.season.name} - Game #{@goal.game.game_of_season}" %></h2>
+
+  <form action=<%= "/games/#{@goal.game.id}/goals/#{@goal.id}" %> method="post">
+    <input id="hidden_method" type="hidden" name="_method" value="patch">
+    <input id="hidden_game" type="hidden" name="goal[game_id]" value="<%= @goal.game.id %>">
+    <label for="team">Team:</label>
+    <select id="team" name="goal[team_id]">
+      <option value="<%= @goal.game.team.id %>"<%= 'selected' if @goal.team.id == @goal.game.team.id %>><%= @goal.game.team.name %></option>
+      <option value="nil" <%= 'selected' if !@goal.team.id == @goal.game.team.id %>><%= @goal.game.opponent %></option>
+    </select>
+    <br>
+    <label for="goal_player">Player:</label>
+    <select id="goal_player" name="goal[player_id]">
+      <option value=""></option>
+      <% @goal.game.players.each do |player| %>
+        <option value=<%= player.id %> <%= 'selected' if player == @goal.player %>><%= "#{player.jersey_num} - #{player.name}" %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="assist_1_player">Assist 1:</label>
+    <select id="assist_1_player" name="goal[assist_player_ids][]">
+      <option value=""></option>
+      <% @goal.game.players.each do |player| %>
+        <option value=<%= player.id %> <%= 'selected' if player == @goal.assist_players[0] %>><%= "#{player.jersey_num} - #{player.name}" %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="assist_2_player">Assist 2:</label>
+    <select id="assist_2_player" name="goal[assist_player_ids][]">
+      <option value=""></option>
+      <% @goal.game.players.each do |player| %>
+        <option value=<%= player.id %> <%= 'selected' if player == @goal.assist_players[1] %>><%= "#{player.jersey_num} - #{player.name}" %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="period">Period:</label>
+    <select id="period" name="goal[period]">
+      <% periods.each_with_index do |period, index| %>
+        <option value="<%= index + 1 %>" <%= 'selected' if @goal.period == index + 1 %>><%= period %></option>
+      <% end %>
+    </select>
+    <br>
+    <label for="time_minutes">Time:</label>
+    <input id="time_minutes" type="number" name="time_minutes" min="0" max="20" value="<%= @goal.time_scored.split(":")[0] %>"> :
+    <input id="time_seconds" type="number" name="time_seconds" min="0" max="59" value="<%= @goal.time_scored.split(":")[1] %>">
+    <br>
+    <button class="btn btn-primary" type="submit">Edit Goal</button>
+  </form>
+</div>

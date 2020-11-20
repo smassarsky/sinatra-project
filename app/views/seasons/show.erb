@@ -17,6 +17,7 @@
           <th>Opponent</th>
           <th>Home / Away</th>
           <th>Status</th>
+          <th>Outcome</th>
           <th>Score</th>
           <th>Actions</th>
         </tr>
@@ -29,7 +30,8 @@
             <td><%= game.opponent %></td>
             <td><%= game.place %></td>
             <td><%= game.status %></td>
-            <td><%= game.score %></td>
+            <td><%= game.win_loss %></td>
+            <td><%= game.score_formatted %></td>
             <td>
               <a href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}" %>><button class="btn btn-sm btn-primary">Game Page</button></a>
               <% if owner?(@season.team) %>

@@ -49,7 +49,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def game_statuses
-      ["TBP", "Win", "Loss", "OTL"]
+      ["TBP", "Complete"]
     end
 
     def home_away_options
@@ -61,7 +61,7 @@ class ApplicationController < Sinatra::Base
     end
 
     def periods
-      ["1st", "2nd", "3rd", "OT", "S/O", "OT1", "OT2", "OT3"]
+      ["1st", "2nd", "3rd", "OT1", "OT2", "OT3", "OT4", "S/O"]
     end
 
   end

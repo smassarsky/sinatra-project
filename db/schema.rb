@@ -12,6 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2020_11_16_225405) do
 
+  create_table "assists", force: :cascade do |t|
+    t.integer "goal_id"
+    t.integer "player_id"
+  end
+
   create_table "game_players", force: :cascade do |t|
     t.integer "game_id"
     t.integer "player_id"
@@ -21,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
     t.integer "season_id"
     t.string "opponent"
     t.string "status"
+    t.string "win_loss"
     t.string "place"
     t.datetime "game_datetime"
   end
@@ -28,8 +34,6 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
   create_table "goals", force: :cascade do |t|
     t.integer "game_id"
     t.integer "player_id"
-    t.integer "assist_1_id"
-    t.integer "assist_2_id"
     t.integer "team_id"
     t.integer "period"
     t.string "time_scored"

@@ -10,12 +10,12 @@ class Season < ActiveRecord::Base
   validates :team_id, presence: true
 
   def record
-    self.games.group(:status).count
+    self.games.group(:win_loss).count
   end
 
   def record_parsed
     count = self.record
-    "#{count["Win"] ||= 0} - #{count["Loss"] ||= 0} - #{count["OTL"] ||= 0}"
+    "#{count["Win"] ||= 0} - #{count["Loss"] ||= 0} - #{count["Tie"] ||= 0} - #{count["OTL"] ||= 0}"
   end
 
   def current_season?

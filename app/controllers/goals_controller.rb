@@ -15,12 +15,14 @@ class GoalsController < ApplicationController
   post "/games/:game_id/goals" do
     redir_login_if_not_logged
     game = Game.find(params[:game_id])
-    scorer = Player.find(params[:player_id])
-    assist_1 = Player.find(params[:assist_1_id])
-    assist_2 = Player.find(params[:assist_2_id])
     if game && owner?(game)
-      goal = Goal.new(game: game, player: scorer, assist_1: assist_1, assist_2: assist_2, team: params[:team] == "us" ? game.team : nil, period: params[:period], time_scored: "#{params[:time_minutes]}:#{params[:time_seconds]}")
-      redirect '/'
+      params[:goal][:time_scored] = "#{params[:time_minutes]}:#{params[:time_seconds]}"
+      goal = Goal.create(params[:goal])
+      if goal.id
+        redirect "/teams/#{game.team.id}/seasons/#{game.season.id}/games/#{game.id}"
+      else
+        redirect '/error/error-creating-goal'
+      end
     elsif game
       redirect '/error/you-cant-edit-that'
     else
@@ -28,19 +30,43 @@ class GoalsController < ApplicationController
     end
   end
 
-  get '/games/:game_id/goals/:goal_id' do
+  get '/games/:game_id/goals/:goal_id/edit' do
     redir_login_if_not_logged
-
+    @goal = Goal.find(params[:goal_id])
+    if @goal && owner?(@goal)
+      erb :'/goals/edit'
+    elsif @goal
+      redirect '/error/you-cant-edit-that'
+    else
+      redirect '/error/invalid-goal'
+    end
   end
 
   patch '/games/:game_id/goals/:goal_id' do
     redir_login_if_not_logged
-
+    goal = Goal.find(params[:goal_id])
+    if goal && owner?(goal)
+      params[:goal][:time_scored] = "#{params[:time_minutes]}:#{params[:time_seconds]}"
+      goal.update(params[:goal])
+      redirect "/teams/#{goal.game.team.id}/seasons/#{goal.season.id}/games/#{goal.id}"
+    elsif game
+      redirect '/error/you-cant-edit-that'
+    else
+      redirect '/error/invalid-game'
+    end
   end
 
   delete '/games/:game_id/goals/:goal_id' do
     redir_login_if_not_logged
-
+    goal = Goal.find(params[:goal_id])
+    if goal && owner?(goal)
+      goal.destroy
+      redirect "/games/#{params[:game_id]}"
+    elsif goal
+      redirect '/error/you-cant-edit-that'
+    else
+      redirect '/error/invalid-goal'
+    end
   end
 
 end

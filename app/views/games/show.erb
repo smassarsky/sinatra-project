@@ -1,11 +1,17 @@
-<div class="text-center">
-  <h2><%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+<div class="mt-3 text-center">
+  <div class="d-flex justify-content-center">
+    <h2><%= "#{@game.team.name} - #{@game.season.name} - Game #{@game.game_of_season}" %></h2>
+    <% if owner?(@game) %>
+      <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
+    <% end %>
+  </div>
 
   <p>Date and Time: <%= @game.game_datetime %><p>
   <p>Opponent: <%= @game.opponent %></p>
   <p>At: <%= @game.place %></p>
   <p>Status: <%= @game.status %></p>
-  <p>Score: <%= @game.score %></p>
+  <p>Outcome: <%= @game.win_loss %></p>
+  <p>Score: <%= @game.score_formatted %></p>
 
 
   <h2>Details</h2>
@@ -30,8 +36,8 @@
       <% @game.players.each do |player| %>
         <tr>
           <td><%= player.name %></td>
-          <td></td>
-          <td></td>
+          <td><%= player.count_goals(@game) %></td>
+          <td><%= player.count_assists(@game) %></td>
           <td></td>
         </tr>
       <% end %>
@@ -41,7 +47,10 @@
   <div class="my-3 d-flex justify-content-center">
     <h3>Goals</h3>
     <% if owner?(@game) %>
+      <% cols = "7" %>
       <a class="mx-3 my-auto" href=<%= "/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
+    <% else %>
+      <% cols = "6" %>
     <% end %>
   </div>
   <table class="table">
@@ -53,22 +62,38 @@
         <th>Assist 1</th>
         <th>Assist 2</th>
         <th>On Ice</th>
+        <% if owner?(@game) %>
+          <th>Actions</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
-      <tr><th colspan="6">First Period</th></tr>
-        <% @game.goals.where(period: "1st").order(:time_scored).each do |goal| %>
-          <td><%= goal.time_scored %></td>
-          <td><%= goal.team ? goal.team.name : @game.opponent %></td>
-          <td><%= goal.player ? goal.player.name : "-" %></td>
-          <td><%= goal.assist_1 ? goal.assist_1.name : "-" %></td>
-          <td><%= goal.assist_2 ? goal.assist_2.name : "-" %></td>
-          <td><%= "-" %></td>
+      <% periods.each_with_index do |period, index| %>
+        <% period_goals = @game.goals.where(period: index + 1) %>
+        <% if !period_goals.empty? %>
+          <tr><th colspan=<%= cols %>><%= periods[index] %><%= " Period" if [0, 1, 2].include?(index) %></th></tr>
+          <% period_goals.order(:time_scored).each do |goal| %>
+            <tr>
+              <td><%= goal.time_scored %></td>
+              <td><%= goal.team ? goal.team.name : @game.opponent %></td>
+              <td><%= goal.player ? goal.player.name : "-" %></td>
+              <td><%= goal.assist_players[0] ? goal.assist_players[0].name : "-" %></td>
+              <td><%= goal.assist_players[1] ? goal.assist_players[1].name : "-" %></td>
+              <td><%= "-" %></td>
+              <% if owner?(@game) %>
+                <td>
+                  <a href=<%= "/games/#{@game.id}/goals/#{goal.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Goal</button></a>
+                  <form class="d-inline-block" action=<%= "/games/#{@game.id}/goals/#{goal.id}" %> method="post">
+                    <input id=<%= "hidden_goal_#{goal.id}" %> type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-sm btn-primary">Delete Goal</button>
+                  </form>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+
         <% end %>
-      <tr><th colspan="6">Second Period</th></tr>
-
-      <tr><th colspan="6">Third Period</th></tr>
-
+      <% end %>
     </tbody>
   </table>
 
@@ -90,11 +115,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr><th colspan="7">First Period</th></tr>
+      <tr><th colspan=<%= cols %>>First Period</th></tr>
 
-      <tr><th colspan="7">Second Period</th></tr>
+      <tr><th colspan=<%= cols %>>Second Period</th></tr>
 
-      <tr><th colspan="7">Third Period</th></tr>
+      <tr><th colspan=<%= cols %>>Third Period</th></tr>
 
     </tbody>
   </table>
