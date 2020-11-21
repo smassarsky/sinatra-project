@@ -44,8 +44,8 @@
           <td><%= player.name %></td>
           <td><%= player.count_goals(@game) %></td>
           <td><%= player.count_assists(@game) %></td>
-          <td></td>
-          <td>PIM</td>
+          <td><%= player.plus_minus(@game) %></td>
+          <td><%= player.pim(@game) %></td>
         </tr>
       <% end %>
     </tbody>

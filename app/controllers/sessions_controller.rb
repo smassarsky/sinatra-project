@@ -37,6 +37,7 @@ class SessionsController < ApplicationController
 
   get '/dashboard' do
     redir_login_if_not_logged
+    @user = current_user
     erb :'/sessions/dashboard'
   end
 

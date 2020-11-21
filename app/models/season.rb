@@ -3,7 +3,10 @@ class Season < ActiveRecord::Base
   has_many :players, through: :team
   has_one :owner, through: :team
   has_many :games
+  has_many :game_players, through: :games
   has_many :goals, through: :games
+  has_many :assists, through: :goals
+  has_many :assist_players, through: :goals
   has_many :on_ice_for_goals, through: :goals
   has_many :on_ice_for_goal_players, through: :on_ice_for_goals
   has_many :penalties, through: :games
@@ -31,6 +34,15 @@ class Season < ActiveRecord::Base
     else
       selection = games.min{|a, b| a.game_datetime <=> b.game_datetime}
       "#{selection.game_datetime} #{selection.place == "Away" ? 'at' : 'vs'} #{selection.opponent}"
+    end
+  end
+
+  def next_game_obj
+    games = self.games.where('game_datetime > ?', DateTime.now)
+    if games.empty?
+      nil
+    else
+      games.min{|a, b| a.game_datetime <=> b.game_datetime}
     end
   end
 

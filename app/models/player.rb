@@ -26,9 +26,21 @@ class Player < ActiveRecord::Base
     thing.assists.where(player: self).count
   end
 
+  def points(thing)
+    count_goals(thing) + count_assists(thing)
+  end
+
   def plus_minus(thing)
     all_goals = thing.on_ice_for_goals.where(player: self)
     all_goals.count{|on_ice| on_ice.goal.team != nil} - all_goals.count{|on_ice| on_ice.goal.team == nil}
+  end
+
+  def pim(thing)
+    "#{thing.penalties.where(player: self).sum(:length)}:00"
+  end
+
+  def games_played_in(thing)
+    self.game_players.where(player: self).count
   end
 
 end

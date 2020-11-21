@@ -14,8 +14,7 @@ class GoalsController < ApplicationController
     redir_login_if_not_logged
     game = Game.find(params[:game_id])
     if exists_and_owner?(game)
-      params[:goal][:time_scored] = "#{params[:time_minutes]}:#{params[:time_seconds]}"
-      goal = Goal.create(params[:goal])
+      goal = Goal.create(process_goals_hash(params)[:goal])
       if goal.id
         redirect "/teams/#{params[:team_id]}/seasons/#{params[:season_id]}/games/#{params[:game_id]}"
       else
@@ -38,8 +37,7 @@ class GoalsController < ApplicationController
     redir_login_if_not_logged
     goal = Goal.find(params[:goal_id])
     if exists_and_owner?(goal)
-      params[:goal][:time_scored] = "#{params[:time_minutes]}:#{params[:time_seconds]}"
-      goal.update(params[:goal])
+      goal.update(process_goals_hash(params)[:goal])
       redirect "/teams/#{params[:team_id]}/seasons/#{params[:season_id]}/games/#{params[:game_id]}"
     end
   end

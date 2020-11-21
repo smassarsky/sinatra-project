@@ -15,4 +15,9 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true
+
+  def upcoming_games
+    self.games.where(status: "TBP").order(:game_datetime).limit(5)
+  end
+
 end

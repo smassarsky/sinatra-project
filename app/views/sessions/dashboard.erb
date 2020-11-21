@@ -1,1 +1,80 @@
-<h2 class="text-center py-100">Your Teams</h2>
+<div class="mt-3 text-center">
+  <h2 class="text-center">Upcoming Games</h2>
+
+
+  <% if !@user.upcoming_games.empty? %>
+    <table class="my-3 table">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Date / Time</th>
+          <th>Opponent</th>
+          <th>Home / Away</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user.upcoming_games.each do |game| %>
+          <tr>
+            <td><%= game.team.name %></td>
+            <td><%= game.game_datetime %></td>
+            <td><%= game.opponent %></td>
+            <td><%= game.place %></td>
+            <td>
+              <a href=<%= "/teams/#{game.team.id}" %>><button class="btn btn-sm btn-primary">Team Page</button></a>
+              <a href=<%= "/teams/#{game.team.id}/seasons/#{game.season.id}" %>><button class="btn btn-sm btn-primary">Season Page</button></a>
+              <a href=<%= "/teams/#{game.team.id}/seasons/#{game.season.id}/games/#{game.id}" %>><button class="btn btn-sm btn-primary">Game Page</button></a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h4>No Upcoming Games</h4>
+  <% end %>
+
+  <h2>Teams</h2>
+
+  <% if !@user.teams_played_for.empty? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Current Season</th>
+          <th>Record</th>
+          <th>Next Game</th>
+          <th>Points</th>
+          <th>Goals</th>
+          <th>Assists</th>
+          <th>+/-</th>
+          <th>PIM</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @user.teams_played_for.each do |team| %>
+          <% player = team.players.find_by(user: @user) %>
+          <tr>
+            <td><%= team.name %></td>
+            <td><%= team.current_season.name %></td>
+            <td><%= team.current_season.record_parsed %></td>
+            <td><%= team.next_game %></td>
+            <td><%= player.points(team.current_season) %></td>
+            <td><%= player.count_goals(team.current_season) %></td>
+            <td><%= player.count_assists(team.current_season) %></td>
+            <td><%= player.plus_minus(team.current_season) %></td>
+            <td><%= player.pim(team.current_season) %></td>
+            <td>
+              <a href=<%= "/teams/#{team.id}" %>><button class="btn btn-sm btn-primary">Team Page</button></a>
+              <a href=<%= "/teams/#{team.id}/seasons/#{team.current_season.id}" %>><button class="btn btn-sm btn-primary">Season Page</button></a>
+              <a href=<%= "/teams/#{team.id}/seasons/#{team.current_season.id}/games/#{team.current_season.next_game_obj.id}" %>><button class="btn btn-sm btn-primary">Next Game</button></a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h4>No Teams</h4>
+  <% end %>
+
+</div>

@@ -74,6 +74,21 @@ class ApplicationController < Sinatra::Base
       ["1st", "2nd", "3rd", "OT1", "OT2", "OT3", "OT4", "S/O"]
     end
 
+    def process_goals_hash(params)
+      params[:goal][:time_scored] = "#{params[:time_minutes]}:#{params[:time_seconds]}"
+      ([params[:goal][:player_id]] + params[:goal][:assist_player_ids]).each do |id|
+        if id != ""
+          if params[:goal][:on_ice_for_goal_player_ids]
+            params[:goal][:on_ice_for_goal_player_ids] << id
+          else
+            params[:goal][:on_ice_for_goal_player_ids] = [id]
+          end
+        end
+      end
+      params[:goal][:on_ice_for_goal_player_ids] = params[:goal][:on_ice_for_goal_player_ids].uniq
+      params
+    end
+
   end
 
 end

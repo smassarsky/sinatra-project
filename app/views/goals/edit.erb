@@ -44,6 +44,13 @@
     <input id="time_minutes" type="number" name="time_minutes" min="0" max="20" value="<%= @goal.time_scored.split(":")[0] %>"> :
     <input id="time_seconds" type="number" name="time_seconds" min="0" max="59" value="<%= @goal.time_scored.split(":")[1] %>">
     <br>
+    <label>Players on Ice:</label>
+    <br>
+    <% @goal.game.players.each do |player| %>
+      <label for=<%= "player_#{player.id}" %>><%= "#{player.jersey_num} - #{player.name}" %></label>
+      <input id=<%= "player_#{player.id}" %> type="checkbox" name="goal[on_ice_for_goal_player_ids][]" value="<%= player.id %>" <%= 'checked' if @goal.on_ice_for_goal_players.include?(player) %>>
+      <br>
+    <% end %>
     <button class="btn btn-primary" type="submit">Edit Goal</button>
   </form>
 </div>

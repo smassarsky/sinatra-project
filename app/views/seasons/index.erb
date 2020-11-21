@@ -1,9 +1,12 @@
 
 <div class="mt-3 text-center" id="all_seasons">
-  <h2><%= @team.name %> - All Seasons</h2>
-  <% if owner?(@team) %>
-    <a href=<%= "/teams/#{@team.id}/seasons/new" %>><button class="btn btn-sm btn-primary">New Season</button></a>
-  <% end %>
+  <div class="d-flex justify-content-center">
+    <h2><%= @team.name %> - All Seasons</h2>
+    <a class="mx-3 my-auto" href=<%= "/teams/#{@team.id}" %>><button class="btn btn-sm btn-primary">Back to Team Page</button></a>
+    <% if owner?(@team) %>
+      <a class="my-auto" href=<%= "/teams/#{@team.id}/seasons/new" %>><button class="btn btn-sm btn-primary">New Season</button></a>
+    <% end %>
+  </div>
   
   <% if !@team.seasons.empty? %>
     <table class="table mt-3">

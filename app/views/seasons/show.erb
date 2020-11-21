@@ -1,6 +1,7 @@
 <div id="season" class="mt-3 text-center">
   <h2><%= @season.team.name %> - <%= @season.name %> Season - (<%= @season.record_parsed %>)</h2>
-
+  <a class="mx-3" href=<%= "/teams/#{@season.team.id}" %>><button class="btn btn-sm btn-primary">Back to Team Page</button></a>
+  
   <div class="my-3 d-flex justify-content-center">
     <h3>Games</h3>
     <% if owner?(@season.team) %>
@@ -49,5 +50,34 @@
   <% else %>
     <h4>No Games Posted</h4>
   <% end %>
+
+  <h3>Player Stats</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Games Played</th>
+        <th>Points</th>
+        <th>Goals</th>
+        <th>Assists</th>
+        <th>+/-</th>
+        <th>PIM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @season.players.each do |player| %>
+        <tr>
+          <td><%= player.name %></td>
+          <td><%= player.games_played_in(@season) %></td>
+          <td><%= player.points(@season) %></td>
+          <td><%= player.count_goals(@season) %></td>
+          <td><%= player.count_assists(@season) %></td>
+          <td><%= player.plus_minus(@season) %></td>
+          <td><%= player.pim(@season) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
 </div>
