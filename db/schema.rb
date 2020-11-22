@@ -54,6 +54,12 @@ ActiveRecord::Schema.define(version: 2020_11_16_225405) do
     t.string "infraction"
   end
 
+  create_table "player_codes", force: :cascade do |t|
+    t.integer "player_id"
+    t.string "code"
+    t.string "status"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.integer "team_id"

@@ -6,7 +6,7 @@
       <a class="mr-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
       <form class="my-auto" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}" %> method="post">
         <input id="hidden" type="hidden" name="_method" value="delete">
-        <button class="btn btn-sm btn-primary">Delete Game</button>
+        <button class="btn btn-sm btn-danger">Delete Game</button>
       </form>
     <% end %>
   </div>
@@ -57,7 +57,7 @@
       <% cols = 7 %>
       <a class="mx-3 my-auto" href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/new" %>><button class="btn btn-sm btn-primary">Add Goal</button></a>
     <% else %>
-      <% cols = "6" %>
+      <% cols = 6 %>
     <% end %>
   </div>
   <table class="table">
@@ -102,7 +102,7 @@
                   <a href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/#{goal.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Goal</button></a>
                   <form class="d-inline-block" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/goals/#{goal.id}" %> method="post">
                     <input id=<%= "hidden_goal_#{goal.id}" %> type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-sm btn-primary">Delete Goal</button>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete Goal</button>
                   </form>
                 </td>
               <% end %>
@@ -150,7 +150,7 @@
                   <a href=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties/#{penalty.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Penalty</button></a>
                   <form class="d-inline-block" action=<%= "/teams/#{@game.team.id}/seasons/#{@game.season.id}/games/#{@game.id}/penalties/#{penalty.id}" %> method="post">
                     <input id=<%= "hidden_penalty_#{penalty.id}" %> type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-sm btn-primary">Delete Penalty</button>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete Penalty</button>
                   </form>
                 </td>
               <% end %>

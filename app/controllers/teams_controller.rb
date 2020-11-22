@@ -28,10 +28,12 @@ class TeamsController < ApplicationController
   get '/teams/:id' do
     redir_login_if_not_logged
     @team = Team.find(params[:id])
-    if @team
+    if @team && owner_or_teammate?(@team)
       erb :'/teams/show'
+    elsif @team
+      redirect '/error/you-cant-view-that'
     else
-      redirect '/teams'
+      redirect '/error/invalid-team'
     end
   end
 

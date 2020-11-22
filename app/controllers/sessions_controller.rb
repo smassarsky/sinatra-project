@@ -45,4 +45,31 @@ class SessionsController < ApplicationController
     erb :'/sessions/error'
   end
 
+  get '/join' do
+    redir_login_if_not_logged
+    erb :'/sessions/join'
+  end
+
+  post "/join" do
+    redir_login_if_not_logged
+    @code = PlayerCode.find_by(code: params[:code])
+    if @code
+      erb :'/sessions/confirm'
+    else
+      redirect '/error/invalid-code'
+    end
+  end
+
+  post '/confirm_join' do
+    redir_login_if_not_logged
+    code = PlayerCode.find_by(code: params[:code])
+    if code && code.status == "New"
+      code.player.update(user: current_user)
+      code.update(status: "Used")
+      redirect "/teams/#{code.player.team.id}"
+    else
+      redirect '/error/invalid-code'
+    end
+  end
+
 end

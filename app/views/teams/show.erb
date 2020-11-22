@@ -5,7 +5,7 @@
     <a class="my-auto mx-3" href=<%= "/teams/#{@team.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Name</button></a>
     <form class="my-auto" action=<%= "/teams/#{@team.id}" %> method="post">
       <input id="hidden" type="hidden" name="_method" value="delete">
-      <button class="btn btn-sm btn-primary" type="submit">Delete Team</button>
+      <button class="btn btn-sm btn-danger" type="submit">Delete Team</button>
     </form>
   <% end %>
 </div>
@@ -39,7 +39,7 @@
               <a href=<%= "/teams/#{@team.id}/seasons/#{@team.current_season.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
               <form class="d-inline-block" action=<%= "/teams/#{@team.id}/seasons" %> method="post">
                 <input id=<%= "hidden_season_#{@team.current_season.id}" %> type="hidden" name="_method" value="delete">
-                <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
               </form>
             <% end %>
           </td>
@@ -88,11 +88,16 @@
                 <a href=<%= "/teams/#{@team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a>
                 <% if current_user == @team.owner %> 
                   <a href=<%= "/teams/#{@team.id}/players/#{player.id}/edit" %>><button class="btn btn-sm btn-primary">Edit</button></a>
+
+                  <% if !player.user %>
+                      <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary"><%= player.player_code ? "Player Code" : "Generate Code" %></button></a>
+                  <% end %>
+
                   <form class="d-inline-block"action=<%= "/teams/#{@team.id}/players/#{player.id}" %> method="post">
                     <input id=<%= "hidden_player_#{player.id}" %> type="hidden" name="_method" value="delete">
-                    <button type="submit" class="btn btn-sm btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                   </form>
-                  <a href=<%= "/teams/#{@team.id}/players/#{player.id}/gen_user_code" %>><button class="btn btn-sm btn-primary">User Code</button></a>
+
                 <% end %>
               </td>
             </tr>

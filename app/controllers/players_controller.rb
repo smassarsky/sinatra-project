@@ -97,8 +97,17 @@ class PlayersController < ApplicationController
     end
   end
 
-  get '/teams/:team_id/players/:player_id/codegen' do
-    "TODO"
+  get '/teams/:team_id/players/:player_id/gen_user_code' do
+    redir_login_if_not_logged
+    @player = Player.find(params[:player_id])
+    if exists_and_owner?(@player)
+      @code = @player.player_code ? @player.player_code : PlayerCode.create(player: @player, code: SecureRandom.hex, status: "New")
+      if @code.id
+        erb :'/players/gen_code'
+      else
+        redirect '/error/error-generating-code'
+      end
+    end
   end
 
 end

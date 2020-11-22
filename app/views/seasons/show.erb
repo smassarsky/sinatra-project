@@ -39,7 +39,7 @@
                 <a href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Game</button></a>
                 <form class="d-inline-block" action=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/#{game.id}" %> method="post">
                   <input id=<%= "hidden_#{game.id}" %> type="hidden" name="_method" value="delete">
-                  <button class="btn btn-sm btn-primary" type="submit">Delete</button>
+                  <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                 </form>
               <% end %>
             </td>

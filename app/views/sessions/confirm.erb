@@ -1,0 +1,14 @@
+<h2>Confirm Player Link</h2>
+
+<h4>Link the following player to your user account?</h4>
+
+<p>Please contact your team manager for any issues with the following details:</p>
+
+<%= @code.player.team.name %><br>
+<%= @code.player.name %><br>
+<%= @code.player.jersey_num %><br><br>
+
+<form action="/confirm_join" method="post">
+  <input id="hidden" type="hidden" name="code" value="<%= @code.code %>">
+  <button type="submit" class="btn btn-primary">Confirm</button>
+</form>

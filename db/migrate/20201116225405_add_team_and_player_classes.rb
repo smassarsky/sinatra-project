@@ -63,5 +63,11 @@ class AddTeamAndPlayerClasses < ActiveRecord::Migration[6.0]
       t.integer :player_id
     end
 
+    create_table :player_codes do |t|
+      t.integer :player_id
+      t.string :code
+      t.string :status
+    end
+
   end
 end

@@ -12,16 +12,24 @@
   <table class="table">
     <thead>
       <tr>
+        <th>Season</th>
         <th>Games Played</th>
         <th>Points</th>
         <th>Goals</th>
         <th>Assists</th>
         <th>+/-</th>
+        <th>PIM</th>
       </tr>
     </thead>
     </tbody>
       <tr>
-
+        <th scope="row"><%= @player.current_season.name %></th>
+        <td><%= @player.games_played_in(@player.current_season) %></td>
+        <td><%= @player.points(@player.current_season) %></td>
+        <td><%= @player.count_goals(@player.current_season) %></td>
+        <td><%= @player.count_assists(@player.current_season) %></td>
+        <td><%= @player.plus_minus(@player.current_season) %></td>
+        <td><%= @player.pim(@player.current_season) %></td>
       </tr>
     </tbody>
   </table>
@@ -38,16 +46,18 @@
         <th>Goals</th>
         <th>Assists</th>
         <th>+/-</th>
+        <th>PIM</th>
       </tr>
     </thead>
     <tbody>
-      <% @player.seasons.each do |stats| %>
-        <th scope="row"><%= stats.season %></th>
-        <td><%= stats.games_played %></td>
-        <td><%= stats.points %></td>
-        <td><%= stats.goals %></td>
-        <td><%= stats.assists %></td>
-        <td><%= stats.plus_minus %></td>
+      <% @player.seasons.each do |season| %>
+        <th scope="row"><%= season.name %></th>
+        <td><%= @player.games_played_in(season) %></td>
+        <td><%= @player.points(season) %></td>
+        <td><%= @player.count_goals(season) %></td>
+        <td><%= @player.count_assists(season) %></td>
+        <td><%= @player.plus_minus(season) %></td>
+        <td><%= @player.pim(season) %></td>
       <% end %>
     </tbody>
   </table>
