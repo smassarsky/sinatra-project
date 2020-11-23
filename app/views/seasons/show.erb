@@ -1,10 +1,18 @@
 <div id="season" class="mt-3 text-center">
   <h2><%= @season.team.name %> - <%= @season.name %> Season - (<%= @season.record_parsed %>)</h2>
-  <a class="mx-3" href=<%= "/teams/#{@season.team.id}" %>><button class="btn btn-sm btn-primary">Back to Team Page</button></a>
+  <a class="mr-3" href=<%= "/teams/#{@season.team.id}" %>><button class="btn btn-sm btn-primary">Back to Team Page</button></a>
+  <a class="mr-3" href=<%= "/teams/#{@season.team.id}/seasons" %>><button class="btn btn-sm btn-primary">Back to Seasons Page</button></a>
+  <% if owner?(@season) %>
+    <a class="mr-3" href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/edit" %>><button class="btn btn-sm btn-primary">Edit Season</button></a>
+    <form class="d-inline-block" action=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}" %> method="post">
+      <input id="hidden_delete_team" type="hidden" name="_method" value="delete">
+      <button type="submit" class="btn btn-sm btn-danger">Delete Season</button>
+    </form>
+  <% end %>
   
   <div class="my-3 d-flex justify-content-center">
     <h3>Games</h3>
-    <% if owner?(@season.team) %>
+    <% if owner?(@season) %>
       <a class="mx-3" href=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games/new" %>><button class="btn btn-sm btn-primary">Add Game</button></a>
     <% end %>
   </div>

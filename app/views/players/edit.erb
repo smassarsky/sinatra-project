@@ -1,26 +1,22 @@
 <h2>Edit Player</h2>
 <form action=<%= "/teams/#{@player.team.id}/players/#{@player.id}" %> method="post">
   <input id="hidden" type="hidden" name="_method" value="patch">
+  <input id="hidden_team" type="hidden" name="player[team_id]" value="<%= @player.team.id %>">
   <label for="name">Name:</label>
-  <input id="name" type="text" name="name" value="<%= @player.name %>">
+  <input id="name" type="text" name="player[name]" value="<%= @player.name %>">
   <br>
   <label for="jersey">Jersey Number:</label>
-  <input id="jersey" type="number" name="jersey" value="<%= @player.jersey_num %>">
+  <input id="jersey" type="number" name="player[jersey_num]" value="<%= @player.jersey_num %>">
   <br>
   <label for="position">Position:</label>
-  <select id="position" name="position">
+  <select id="position" name="player[position]">
     <% positions.each do |position| %>
       <option value="<%= position %>" <%= 'selected' if @player.position == position %>><%= position %></option>
     <% end %>
   </select>
   <br>
   <label for="active">Active:</label>
-  <input id="active" type="checkbox" name="active" value="true" <%= 'checked' if @player.status == "active" %>>
+  <input id="active" type="checkbox" name="player[status]" value="true" <%= 'checked' if @player.status == "active" %>>
   <br>
-  <% if !@player.user || @player.user == current_user %>
-    <label for="owner">Owner:</label>
-    <input id="owner" type="checkbox" name="owner" value="true" <%= 'checked' if @player.user == current_user %>>
-    <br>
-  <% end %>
   <button class="btn btn-primary" type="submit">Edit Player</button>
 </form>

@@ -18,6 +18,7 @@ class Player < ActiveRecord::Base
   validates :name, presence: true
   validates :team_id, presence: true
   validates :status, presence: true
+  validates :position, inclusion: { in: ["C", "LW", "RW", "D", "G"]}
 
   
   def count_goals(thing)
@@ -42,7 +43,7 @@ class Player < ActiveRecord::Base
   end
 
   def games_played_in(thing)
-    self.game_players.where(player: self).count
+    thing.game_players.where(player: self).count
   end
 
   def stats(thing)

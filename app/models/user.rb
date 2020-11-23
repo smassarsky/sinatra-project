@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :teams_owned, class_name: "Team", foreign_key: "owner_id"
   has_many :players
   has_many :teams_played_for, through: :players, source: "team"
+  has_many :game_players, through: :teams_played_for
   has_many :goals, through: :players
   has_many :penalties, through: :players
   has_many :seasons, through: :teams_played_for

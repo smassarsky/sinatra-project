@@ -4,12 +4,8 @@ class SeasonsController < ApplicationController
   get '/teams/:team_id/seasons' do
     redir_login_if_not_logged
     @team = Team.find(params[:team_id])
-    if @team && owner_or_teammate?(@team)
+    if exists_and_owner_or_teammate?(@team)
       erb :'/seasons/index'
-    elsif @team
-      redirect '/error/you-cant-view-that'
-    else
-      redirect '/error/invalid-team'
     end
   end
 
@@ -17,10 +13,8 @@ class SeasonsController < ApplicationController
   get '/teams/:team_id/seasons/new' do
     redir_login_if_not_logged
     @team = Team.find(params[:team_id])
-    if owner?(@team)
+    if exists_and_owner?(@team)
       erb :'/seasons/new'
-    else
-      redirect '/error/you-cant-do-that'
     end
   end
 
@@ -28,7 +22,7 @@ class SeasonsController < ApplicationController
   post '/teams/:team_id/seasons' do
     redir_login_if_not_logged
     team = Team.find(params[:team_id])
-    if owner?(team)
+    if exists_and_owner?(team)
       season = Season.create(name: params[:season_name], team: team)
       if season.id
         if params[:current_season]
@@ -38,8 +32,6 @@ class SeasonsController < ApplicationController
       else
         redirect '/error/something-went-wrong'
       end
-    else
-      redirect '/error/you-cant-do-that'
     end
   end
 
@@ -47,12 +39,8 @@ class SeasonsController < ApplicationController
   get '/teams/:team_id/seasons/:season_id' do
     redir_login_if_not_logged
     @season = Season.find(params[:season_id])
-    if @season && owner_or_teammate?(@season.team)
+    if exists_and_owner_or_teammate?(@season)
       erb :'/seasons/show'
-    elsif @season
-      redirect '/error/you-cant-view-this-season'
-    else
-      redirect '/error/invalid-season'
     end
   end
 
@@ -60,12 +48,8 @@ class SeasonsController < ApplicationController
   get '/teams/:team_id/seasons/:season_id/edit' do
     redir_login_if_not_logged
     @season = Season.find(params[:season_id])
-    if @season && owner?(@season.team)
+    if exists_and_owner?(@season)
       erb :'/seasons/edit'
-    elsif @season
-      redirect '/error/you-cant-edit-that'
-    else
-      redirect '/error/invalid-season'
     end
   end
 
@@ -73,7 +57,7 @@ class SeasonsController < ApplicationController
   patch '/teams/:team_id/seasons/:season_id' do
     redir_login_if_not_logged
     season = Season.find(params[:season_id])
-    if season && owner?(season.team)
+    if exists_and_owner?(season.team)
       season.update(name: params[:season_name])
       if params[:current_season]
         season.team.update(current_season: season)
@@ -81,8 +65,6 @@ class SeasonsController < ApplicationController
         season.team.update(current_season: nil)
       end
       redirect "/teams/#{season.team.id}/seasons/#{season.id}"
-    else
-      redirect '/error/you-cant-do-that'
     end
   end
 
@@ -90,14 +72,10 @@ class SeasonsController < ApplicationController
   delete '/teams/:team_id/seasons/:season_id' do
     redir_login_if_not_logged
     season = Season.find(params[:season_id])
-    if season && owner?(season.team)
+    if exists_and_owner?(season)
       season.games.destroy_all
       season.destroy
       redirect "/teams/#{params[:team_id]}/seasons"
-    elsif season
-      redirect '/error/you-cant-do-that'
-    else
-      redirect '/error/invalid-season'
     end
   end
 end

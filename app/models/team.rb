@@ -4,6 +4,7 @@ class Team < ActiveRecord::Base
   has_many :users, through: :players, foreign_key: "user_id"
   has_many :seasons
   has_many :games, through: :seasons
+  has_many :game_players, through: :seasons
   has_many :goals, through: :games
   has_many :penalties, through: :games
   belongs_to :current_season, class_name: "Season"

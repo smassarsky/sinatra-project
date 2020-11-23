@@ -54,6 +54,16 @@ class ApplicationController < Sinatra::Base
       end
     end
 
+    def exists_and_owner_or_teammate?(thing)
+      if thing && owner_or_teammate?(thing)
+        true
+      elsif thing
+        redirect '/error/you-cant-do-that'
+      else
+        redirect '/error/that-doesnt-exist'
+      end
+    end
+
     def current_season?(season)
       season == season.team.current_season
     end
