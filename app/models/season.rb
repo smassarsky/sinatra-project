@@ -1,6 +1,7 @@
 class Season < ActiveRecord::Base
   belongs_to :team
   has_many :players, through: :team
+  has_many :users, through: :players
   has_one :owner, through: :team
   has_many :games
   has_many :game_players, through: :games

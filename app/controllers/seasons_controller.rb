@@ -57,7 +57,7 @@ class SeasonsController < ApplicationController
   patch '/teams/:team_id/seasons/:season_id' do
     redir_login_if_not_logged
     season = Season.find(params[:season_id])
-    if exists_and_owner?(season.team)
+    if exists_and_owner?(season)
       season.update(name: params[:season_name])
       if params[:current_season]
         season.team.update(current_season: season)

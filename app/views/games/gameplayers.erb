@@ -6,7 +6,7 @@
     <br>
       <% @game.team.players.order(:active).each do |player| %>
         <label><%= "#{player.name} - #{player.status}" %></label>
-        <input type="checkbox" name="player_ids[]" value="<%= player.id %>" <%= 'checked' if @game.players.include?(player) %>>
+        <input type="checkbox" name="attending_player_ids[]" value="<%= player.id %>" <%= 'checked' if @game.attending_players.include?(player) %>>
         <br>
       <% end %>
     <button class="mt-3 btn btn-primary" type="submit">Set Players</button>

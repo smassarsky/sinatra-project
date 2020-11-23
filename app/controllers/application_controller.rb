@@ -36,12 +36,12 @@ class ApplicationController < Sinatra::Base
       ["C", "LW", "RW", "D", "G"]
     end
 
-    def owner_or_teammate?(team)
-      current_user == team.owner || team.users.include?(current_user)
+    def owner_or_teammate?(thing)
+      current_user == thing.owner || thing.users.include?(current_user)
     end
 
-    def owner?(team)
-      current_user == team.owner
+    def owner?(thing)
+      current_user == thing.owner
     end
 
     def exists_and_owner?(thing)

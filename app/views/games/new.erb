@@ -2,20 +2,20 @@
 
 <form action=<%= "/teams/#{@season.team.id}/seasons/#{@season.id}/games" %> method="post">
   <label for="datetime">Date and Time:</label>
-  <input id="datetime" type="datetime-local" name="datetime">
+  <input id="datetime" type="datetime-local" name="game[game_datetime]">
   <br>
   <label for="opponent">Opponent Name:</label>
-  <input id="opponent" type="text" name="opponent">
+  <input id="opponent" type="text" name="game[opponent]">
   <br>
   <label for="at">Home or Away:</label>
-  <select id="at" name="at">
+  <select id="at" name="game[place]">
     <% home_away_options.each do |option| %>
       <option value=<%= option %>><%= option %></option>
     <% end %>
   </select>
   <br>
   <label for="status">Status:</label>
-  <select id="status" name="status">
+  <select id="status" name="game[status]">
     <% game_statuses.each do |option| %>
       <option value=<%= option %>><%= option %></option>
     <% end %>

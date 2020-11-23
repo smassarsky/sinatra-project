@@ -13,14 +13,18 @@
             <th>Team</th>
             <th>Next Game</th>
             <th>Current Record</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @user.teams_owned.each do |team|%>
             <tr>
-              <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+              <td><%= team.name %></td>
               <td><%= team.next_game %></td>
               <td><%= team.record %></td>
+              <td>
+                <a href=<%= "/teams/#{team.id}" %>><button class="btn btn-sm btn-primary">Team Page</button></a>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -34,14 +38,18 @@
             <th>Team</th>
             <th>Next Game</th>
             <th>Current Record</th>
+            <th>Actions</th>
           </tr>
         </thead>
           <tbody>
           <% @user.teams_played_for.each do |team|%>
             <tr>
-              <td><a href=<%= "/teams/#{team.id}" %>><%= team.name %></a></td>
+              <td><%= team.name %></td>
               <td><%= team.next_game %></td>
               <td><%= team.record %></td>
+              <td>
+                <a href=<%= "/teams/#{team.id}" %>><button class="btn btn-sm btn-primary">Team Page</button></a>
+              </td>
             </tr>
           <% end %>
         </tbody>

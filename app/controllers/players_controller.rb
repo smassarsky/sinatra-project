@@ -37,7 +37,7 @@ class PlayersController < ApplicationController
   get '/teams/:team_id/players/:player_id' do
     redir_login_if_not_logged
     @player = Player.find(params[:player_id])
-    if exists_and_owner_or_teammate?(@player)
+    if @player && owner_or_teammate?(@player.team)
       erb :'/players/show'
     end
   end

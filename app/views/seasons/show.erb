@@ -71,6 +71,7 @@
         <th>Assists</th>
         <th>+/-</th>
         <th>PIM</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -83,6 +84,7 @@
           <td><%= player.count_assists(@season) %></td>
           <td><%= player.plus_minus(@season) %></td>
           <td><%= player.pim(@season) %></td>
+          <td><a href=<%= "/teams/#{@season.team.id}/players/#{player.id}" %>><button class="btn btn-sm btn-primary">Profile</button></a></td>
         </tr>
       <% end %>
     </tbody>

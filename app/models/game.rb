@@ -1,10 +1,12 @@
 class Game < ActiveRecord::Base
   belongs_to :season
   has_one :team, through: :season
+  has_many :players, through: :team
+  has_many :users, through: :players
   has_one :owner, through: :team
   has_many :game_players
-  has_many :players, through: :game_players
-  has_many :users, through: :players
+  has_many :attending_players, through: :game_players, source: "player"
+  has_many :attending_users, through: :attending_players, foreign_key: "user_id"
   has_many :goals
   has_many :assists, through: :goals
   has_many :assist_players, through: :goals

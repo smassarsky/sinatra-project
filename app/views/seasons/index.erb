@@ -21,7 +21,7 @@
       <tbody>
         <% @team.seasons.each do |season| %>
           <tr>
-            <td><a href=<%= "/teams/#{@team.id}/seasons/#{season.id}" %>><%= season.name %></a><%= " (Current)" if current_season?(season) %></td>
+            <td><%= season.name %><%= " (Current)" if current_season?(season) %></td>
             <td><%= current_season?(season) ? season.next_game : "-" %></td>
             <td><%= season.record_parsed %></td>
             <td>

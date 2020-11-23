@@ -39,7 +39,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @game.players.each do |player| %>
+      <% @game.attending_players.each do |player| %>
         <tr>
           <td><%= player.name %></td>
           <td><%= player.count_goals(@game) %></td>

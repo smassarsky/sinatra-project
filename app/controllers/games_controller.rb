@@ -1,9 +1,9 @@
 class GamesController < ApplicationController
 
   #index
-  get '/teams/:team_id/seasons/:season_id/games' do
-    "TODO - index (don't really need this route because of /teams/:team_id/seasons/:season_id"
-  end
+  # get '/teams/:team_id/seasons/:season_id/games' do
+  #   "TODO - index (don't really need this route because of /teams/:team_id/seasons/:season_id"
+  # end
 
   #new
   get '/teams/:team_id/seasons/:season_id/games/new' do
@@ -19,11 +19,12 @@ class GamesController < ApplicationController
     redir_login_if_not_logged
     season = Season.find(params[:season_id])
     if exists_and_owner?(season)
-      game = Game.create(season: season, opponent: params[:opponent], place: params[:at], status: params[:status], game_datetime: DateTime.parse(params[:datetime]))
+      params[:game][:season_id] = params[:season_id]
+      game = Game.create(params[:game])
       if game.id
         redirect "/teams/#{params[:team_id]}/seasons/#{params[:season_id]}/games/#{game.id}"
       else
-        redirect '/error/error-creating-team'
+        redirect '/error/error-creating-game'
       end
     end
   end
@@ -32,7 +33,7 @@ class GamesController < ApplicationController
   get '/teams/:team_id/seasons/:season_id/games/:game_id' do
     redir_login_if_not_logged
     @game = Game.find(params[:game_id])
-    if @game && owner_or_teammate?(@game.team)
+    if exists_and_owner_or_teammate?(@game)
       erb :'/games/show'
     end
   end
@@ -51,7 +52,7 @@ class GamesController < ApplicationController
     redir_login_if_not_logged
     game = Game.find(params[:game_id])
     if exists_and_owner?(game)
-      game.update(opponent: params[:opponent], place: params[:at], status: params[:status], game_datetime: DateTime.parse(params[:datetime]))
+      game.update(params[:game])
       redirect "/teams/#{params[:team_id]}/seasons/#{params[:season_id]}/games/#{params[:game_id]}"
     end
   end
@@ -80,7 +81,7 @@ class GamesController < ApplicationController
     redir_login_if_not_logged
     game = Game.find(params[:game_id])
     if exists_and_owner?(game)
-      game.update(players: Player.find(params[:player_ids]).select{|player| owner?(player)})
+      game.update(attending_players: Player.find(params[:attending_player_ids]).select{|player| owner?(player)})
       redirect "/teams/#{game.team.id}/seasons/#{game.season.id}/games/#{game.id}"
     end
   end
