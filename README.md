@@ -1,1 +1,2 @@
 # sinatra-project
+Web application to help manage a hockey team.  Allows a team manager to create a team, players, seasons, and games, as well as record relevant statistics about each.  Players on the team can also create user accounts to link to one of the players, allowing them read access to the team's pages/information.
